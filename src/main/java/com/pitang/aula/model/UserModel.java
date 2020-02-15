@@ -34,7 +34,7 @@ public class UserModel {
 	@NotNull
 	@Email
 	@Size(max = 50)
-	@Column(name = "user_email")
+	@Column(unique = true ,name = "user_email" )
 	private String email ;
 	
 
@@ -128,7 +128,7 @@ public class UserModel {
 
 
 
-	public boolean getStatus() {
+	public boolean isStatus() {
 		return status;
 	}
 

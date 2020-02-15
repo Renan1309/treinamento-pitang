@@ -18,4 +18,15 @@ public class ModelConverter {
 			}
 		}
 	};
+	
+	public static final Converter<String, Boolean> convertStatusToBoolean = new AbstractConverter<String, Boolean>() {
+		@Override
+		protected Boolean convert(String source) {
+			if(source.equals("Ativo")) {
+				return true;
+			}else {
+				return false;
+			}
+		}
+	};
 }

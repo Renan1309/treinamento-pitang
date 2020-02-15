@@ -7,7 +7,9 @@ import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
+import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.UserModel;
 
 
@@ -27,9 +29,9 @@ public class ModelMapperComponent {
                     protected void configure() {
                     	map().setId(source.getId());
                     	map().setEmail(source.getEmail());
-                    	map().setName(source.getName());
+                    	map().setName((source.getName()));
                     	map().setSurname(source.getSurname());
-                    	map().setStatus(source.getStatus());
+                        when(Conditions.isNotNull()).using(ModelConverter.convertStatus).map(source.isStatus()).setStatus(null);
                     }
                 });
         
@@ -39,11 +41,24 @@ public class ModelMapperComponent {
                     protected void configure() {
                     	map().setId(source.getId());
                     	map().setEmail(source.getEmail());
-                    	map().setName(source.getName());
+                    	map().setName((source.getName()));
                     	map().setSurname(source.getSurname());
-                    	map().setStatus(source.isStatus());
+                        when(Conditions.isNotNull()).using(ModelConverter.convertStatusToBoolean).map(source.getStatus()).setStatus(false);
                     }
                 });
+        modelMapper.addMappings(
+                new PropertyMap<Contact , ContactDto>() {
+                    @Override
+                    protected void configure() {
+                    	map().setId(source.getId());
+                    	map().setId_usu(source.getUserModel().getId());
+                    	map().setName(source.getName());
+                    	map().setFoneContact(source.getFoneContact());
+                    	
+                    }
+                });
+        
+     
         
 	}
 }

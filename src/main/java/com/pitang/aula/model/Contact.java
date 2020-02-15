@@ -26,7 +26,7 @@ public class Contact {
 	
 	@NotNull
 	@Size(max = 70)
-	@Column(name = "contac_name")
+	@Column(name = "contact_name")
 	private String name ;
 	
 	@NotNull
@@ -35,10 +35,10 @@ public class Contact {
 	private String foneContact ;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY ,
-			   cascade = CascadeType.ALL
+	@ManyToOne(fetch = FetchType.LAZY , optional = false
+			   //cascade = CascadeType.ALL
 			  )
-	@JoinColumn(name = "fk_user")
+	@JoinColumn(name = "user_id")
 	private UserModel UserModel ;
 
 

@@ -5,14 +5,29 @@ public class UserDto {
 	private Long Id ;
 	private String name ;
 	private String surname ;
+	private String foneId ;
 	private String email ;
-	private boolean status;
+	private String password ;
+	private String status;
 	
 	
-	public boolean isStatus() {
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getFoneId() {
+		return foneId;
+	}
+	public void setFoneId(String foneId) {
+		this.foneId = foneId;
+	}
+	
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(boolean status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public Long getId() {

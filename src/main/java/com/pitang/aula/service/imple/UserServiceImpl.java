@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserModel> listUser() {
-		// TODO Auto-generated method stub
+
 		if (userRepository.findAll().size() == 0) {
 			return null ;
 		}
@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserModel findByUserByUserName(String usu_name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -42,11 +41,7 @@ public class UserServiceImpl implements UserService {
 		else {
 			return null;
 		}
-		 
-		
-		//return userRepository.findById(id_usu);
-	 
-		
+
 	}
 
 	//Metodo criado para realizar o cadastro
@@ -74,11 +69,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void deleteUser(Long id ) {
-		// TODO Auto-generated method stub
 		
 		userRepository.deleteById(id);
-		
-		
+			
 	}
 	
     
