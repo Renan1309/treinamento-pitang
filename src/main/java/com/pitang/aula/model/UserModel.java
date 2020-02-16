@@ -14,7 +14,7 @@ public class UserModel {
 	//private Picture Foto ;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id ;
+	private Long id ;
 	
 	@NotNull
 	@Size(max = 70)
@@ -51,19 +51,22 @@ public class UserModel {
 	
 	@OneToMany(fetch = FetchType.LAZY ,
 			   cascade = CascadeType.ALL,
-			   mappedBy = "UserModel")
+			   mappedBy = "userModel")
 	private List<Contact> contact;
 
 
 
+	
+
+
 	public Long getId() {
-		return Id;
+		return id;
 	}
 
 
 
 	public void setId(Long id) {
-		Id = id;
+		this.id = id;
 	}
 
 

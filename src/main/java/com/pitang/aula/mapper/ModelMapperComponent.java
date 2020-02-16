@@ -46,6 +46,7 @@ public class ModelMapperComponent {
                         when(Conditions.isNotNull()).using(ModelConverter.convertStatusToBoolean).map(source.getStatus()).setStatus(false);
                     }
                 });
+        
         modelMapper.addMappings(
                 new PropertyMap<Contact , ContactDto>() {
                     @Override
@@ -54,6 +55,19 @@ public class ModelMapperComponent {
                     	map().setId_usu(source.getUserModel().getId());
                     	map().setName(source.getName());
                     	map().setFoneContact(source.getFoneContact());
+                    	
+                    	
+                    }
+                });
+        
+        modelMapper.addMappings(
+                new PropertyMap<ContactDto , Contact>() {
+                    @Override
+                    protected void configure() {
+                    	map().setFoneContact(source.getFoneContact());
+                    	map().setName(source.getName());
+                    	skip().setUserModel(null);
+                    	
                     	
                     }
                 });

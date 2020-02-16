@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 @Table(name = "contact")
 public class Contact {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
@@ -35,11 +36,9 @@ public class Contact {
 	private String foneContact ;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY , optional = false
-			   //cascade = CascadeType.ALL
-			  )
+	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "user_id")
-	private UserModel UserModel ;
+	private UserModel userModel ;
 
 
 	public Long getId() {
@@ -73,13 +72,16 @@ public class Contact {
 
 
 	public UserModel getUserModel() {
-		return UserModel;
+		return userModel;
 	}
 
 
 	public void setUserModel(UserModel userModel) {
-		UserModel = userModel;
+		this.userModel = userModel;
 	}
+
+
+	
 
 
 	
