@@ -31,9 +31,9 @@ public class Contact {
 	private String name ;
 	
 	@NotNull
-	@Size(max = 15)
-	@Column(name = "contact_fone")
-	private String foneContact ;
+	//@Size(max = 15)
+	@Column(name = "id_contact_user")
+	private Long idUserContact ;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY )
@@ -59,15 +59,15 @@ public class Contact {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 
-
-	public String getFoneContact() {
-		return foneContact;
+	public Long getIdUserContact() {
+		return idUserContact;
 	}
 
 
-	public void setFoneContact(String foneContact) {
-		this.foneContact = foneContact;
+	public void setIdUserContact(Long idUserContact) {
+		this.idUserContact = idUserContact;
 	}
 
 

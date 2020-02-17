@@ -55,7 +55,7 @@ public class ModelMapperComponent {
                     	map().setId(source.getId());
                     	map().setId_usu(source.getUserModel().getId());
                     	map().setName(source.getName());
-                    	map().setFoneContact(source.getFoneContact());
+                    	map().setIdUserContact(source.getIdUserContact());
                     	
                     	
                     }
@@ -65,7 +65,7 @@ public class ModelMapperComponent {
                 new PropertyMap<ContactDto , Contact>() {
                     @Override
                     protected void configure() {
-                    	map().setFoneContact(source.getFoneContact());
+                    	map().setIdUserContact(source.getIdUserContact());
                     	map().setName(source.getName());
                     	skip().setUserModel(null);
                     	

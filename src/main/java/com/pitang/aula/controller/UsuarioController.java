@@ -14,20 +14,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.pitang.aula.mapper.ModelMapperComponent;
+import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ReturnData;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.dto.UsuarioForm;
+import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.UserModel;
+import com.pitang.aula.servc.ContactService;
 import com.pitang.aula.servc.UserService;
 
 @RestController
 public class UsuarioController {
 	
 	private UserService userService;
+	private ContactService contactService ;
 	
-	public UsuarioController(UserService userService) {
+	public UsuarioController(UserService userService , ContactService contactService) {
 		super();
 		this.userService = userService ;
+		this.contactService = contactService ;
 	}
 	
 	
@@ -80,6 +85,31 @@ public class UsuarioController {
 		userdto = ModelMapperComponent.modelMapper.map(userModel, new TypeToken<UserDto>() {}.getType());
 		
 		return new ResponseEntity<>(userdto,HttpStatus.OK);
+		
+		
+	}
+	
+	@RequestMapping(value = "/user/{id}/contact", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity <ContactDto>  cadastrarContatao(@PathVariable("id") Long id ,@RequestBody ContactDto contactdto) {
+		
+		UserModel user = contactService.findUserByContact(id);// verificando se o usuario do id tem se tiver adicionar ele em contato para fzr o relacionamento
+		
+		//pergunta a anderson sobre a validação do USER retornado
+		
+		Contact contact = ModelMapperComponent.modelMapper.map(contactdto, new TypeToken<Contact>() {}.getType());
+		
+		contact.setUserModel(user);//adicionando usuario ao contato para criar o relacionamento
+		
+		contact = contactService.creatContact(contact);
+		
+		if(contact == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		 contactdto = ModelMapperComponent.modelMapper.map(contact, new TypeToken<ContactDto>() {}.getType());
+	    
+		return new ResponseEntity<>(contactdto,HttpStatus.OK);
 		
 		
 	}

@@ -29,7 +29,7 @@ public class ContentMenssage {
 	
 	@NotNull
 	@Column(name = "id_user_contact")
-	private String idfonecontact ;
+	private String idusercontact ;
 	
 	@NotNull
 	@Column(name = "status_msg")
@@ -56,12 +56,13 @@ public class ContentMenssage {
 		this.idusermsg = idusermsg;
 	}
 
-	public String getIdfonecontact() {
-		return idfonecontact;
+
+	public String getIdusercontact() {
+		return idusercontact;
 	}
 
-	public void setIdfonecontact(String idfonecontact) {
-		this.idfonecontact = idfonecontact;
+	public void setIdusercontact(String idusercontact) {
+		this.idusercontact = idusercontact;
 	}
 
 	public Long getId() {

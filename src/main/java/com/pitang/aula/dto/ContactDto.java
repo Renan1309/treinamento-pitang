@@ -5,7 +5,7 @@ public class ContactDto {
 	private Long Id ;
 	private Long Id_usu;
 	private String name ;
-	private String foneContact ;
+	private Long idUserContact ;
 	
 	public Long getId_usu() {
 		return Id_usu;
@@ -25,10 +25,11 @@ public class ContactDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getFoneContact() {
-		return foneContact;
+	public Long getIdUserContact() {
+		return idUserContact;
 	}
-	public void setFoneContact(String foneContact) {
-		this.foneContact = foneContact;
+	public void setIdUserContact(Long idUserContact) {
+		this.idUserContact = idUserContact;
 	}
+	
 }
