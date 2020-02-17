@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "contentMenssage")
+@Table(name = "content_menssage")
 public class ContentMenssage {
 	
 	@Id
@@ -20,16 +20,49 @@ public class ContentMenssage {
 	
 	
 	@Size(max = 255)
-	@Column(name = "id_msg")
+	@Column(name = "content_msg")
 	private String contentmsg ;
 	
 	@NotNull
 	@Column(name = "id_user_msg")
-	private Long id_user_msg ;
+	private Long idusermsg ;
 	
 	@NotNull
 	@Column(name = "id_user_contact")
-	private Long id_user_contact ;
+	private String idfonecontact ;
+	
+	@NotNull
+	@Column(name = "status_msg")
+	private Boolean statusmsg;
+	
+	// @Temporal(TemporalType.TIMESTAMP)
+	// private Date cadastro; 
+	
+	
+
+	public Boolean getStatusmsg() {
+		return statusmsg;
+	}
+
+	public void setStatusmsg(Boolean statusmsg) {
+		this.statusmsg = statusmsg;
+	}
+
+	public Long getIdusermsg() {
+		return idusermsg;
+	}
+
+	public void setIdusermsg(Long idusermsg) {
+		this.idusermsg = idusermsg;
+	}
+
+	public String getIdfonecontact() {
+		return idfonecontact;
+	}
+
+	public void setIdfonecontact(String idfonecontact) {
+		this.idfonecontact = idfonecontact;
+	}
 
 	public Long getId() {
 		return id;
@@ -47,21 +80,7 @@ public class ContentMenssage {
 		this.contentmsg = contentmsg;
 	}
 
-	public Long getId_user_msg() {
-		return id_user_msg;
-	}
-
-	public void setId_user_msg(Long id_user_msg) {
-		this.id_user_msg = id_user_msg;
-	}
-
-	public Long getId_user_contact() {
-		return id_user_contact;
-	}
-
-	public void setId_user_contact(Long id_user_contact) {
-		this.id_user_contact = id_user_contact;
-	}
+	
 	
 	
 	

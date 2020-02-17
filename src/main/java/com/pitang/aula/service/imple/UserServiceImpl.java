@@ -1,7 +1,12 @@
 package com.pitang.aula.service.imple;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +53,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel creatUser(UserModel user) {
 		
+		String senha_encrypt = null ;
 		checkUser(user);
+		validateUserCreat(user);
+		  try {
+			  senha_encrypt = passwordhash(user.getPassword());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  
+	    user.setPassword(senha_encrypt);
 		userRepository.save(user);
 		return userRepository.save(user);
 	}
@@ -75,12 +93,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
     
+	//check de campos se algum veio vazio
 	private void checkUser(UserModel user) {
 		if(user == null) {
 			//throw new ExceptionBadRequest("Usuário não pode ser nulo!");
 			System.out.println("Usuário enviado nulo !");
 		}
 		if(StringUtils.isEmpty(user.getEmail())){
+			
 			System.out.println("O email não pode ser vazio!");
 		}
 		if(StringUtils.isEmpty(user.getName())) {
@@ -90,9 +110,46 @@ public class UserServiceImpl implements UserService {
 			System.out.print("A senha não pode ser enviada vazio");
 		} 
 	}
+	
+	private void validateUserCreat(UserModel user) {
+		
+		if(!StringUtils.isEmpty(user.getEmail()) && userRepository.findByEmail(user.getEmail()) != null) {
+			System.out.println("Email ja cadastrado");
+		}
+		
+	}
+	
+	
+	//método para criptografar a senha antes de salvar o usuário
+	private String passwordhash(String senhaOriginal) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+		
+		MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
+		byte messageDigest[] = algorithm.digest(senhaOriginal.getBytes("UTF-8"));
+		 
+		StringBuilder hexString = new StringBuilder();
+		for (byte b : messageDigest) {
+		  hexString.append(String.format("%02X", 0xFF & b));
+		}
+		String senha = hexString.toString();
+		
+		System.out.print(senha);
+		return senha;
+	}
 
 	
 	
 	
 
 }
+
+/*
+ * //   /^(\w+)@(\w+(\.\w{2,3})+)$/
+					String expression = "^[\\\\w\\\\.-]+@([\\\\w\\\\-]+\\\\.)+[A-Z]{2,4}$";
+					Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+					//System.out.println("EMAIL VERDADEIRO");
+			        Matcher matcher = pattern.matcher(user.getEmail());
+			        if (matcher.matches()) {
+			        	System.out.println("EMAIL VERDADEIRO");
+			        }
+			        else
+			        */

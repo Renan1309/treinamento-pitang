@@ -12,6 +12,9 @@ public interface UserModelRepository  extends JpaRepository<UserModel, Long>{
 	
 	Optional<UserModel> findById(Long id);//perguntar a anderson sobre esse optional
 	
+	UserModel findByEmail(String email);
+	
+	
 	
 
 }
