@@ -1,7 +1,7 @@
 package com.pitang.aula.dto;
 
 public class ContactDto {
-	
+	//class
 	private Long Id ;
 	private Long Id_usu;
 	private String name ;

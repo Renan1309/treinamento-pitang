@@ -16,6 +16,7 @@ import com.pitang.aula.model.UserModel;
 
 @Component
 public class ModelMapperComponent {
+	//classes de modelmapper
 	
 	public static final ModelMapper modelMapper= new ModelMapper();
 	
