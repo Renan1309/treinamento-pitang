@@ -2,7 +2,6 @@ package com.pitang.aula.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,19 +28,43 @@ public class ContentMenssage {
 	
 	@NotNull
 	@Column(name = "id_user_contact")
-	private String idusercontact ;
+	private Long idusercontact ;
 	
 	@NotNull
 	@Column(name = "status_msg")
 	private Boolean statusmsg;
 	
+	@NotNull
+	@Column(name = "status_send")
+	private Boolean statusSend ;
+	
+	@NotNull
+	@Column(name = "status_recipient")
+	private Boolean statusRecipient ;
+	
 	// @Temporal(TemporalType.TIMESTAMP)
 	// private Date cadastro; 
 	
-	
+	//SELECT contentmsg FROM content_menssage where id_us
 
 	public Boolean getStatusmsg() {
 		return statusmsg;
+	}
+
+	public Boolean getStatusSend() {
+		return statusSend;
+	}
+
+	public void setStatusSend(Boolean statusSend) {
+		this.statusSend = statusSend;
+	}
+
+	public Boolean getStatusRecipient() {
+		return statusRecipient;
+	}
+
+	public void setStatusRecipient(Boolean statusRecipient) {
+		this.statusRecipient = statusRecipient;
 	}
 
 	public void setStatusmsg(Boolean statusmsg) {
@@ -57,11 +80,13 @@ public class ContentMenssage {
 	}
 
 
-	public String getIdusercontact() {
+	
+
+	public Long getIdusercontact() {
 		return idusercontact;
 	}
 
-	public void setIdusercontact(String idusercontact) {
+	public void setIdusercontact(Long idusercontact) {
 		this.idusercontact = idusercontact;
 	}
 

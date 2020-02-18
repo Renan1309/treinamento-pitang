@@ -43,4 +43,24 @@ public class ContentMenssageController {
 		
 		
 	}
+	
+	
+	@RequestMapping(value = "/mensagelist", method = RequestMethod.GET)
+	@ResponseBody
+	 public ResponseEntity <List<ContentMenssage>>  listconversa() {
+		
+		Long user = (long) 1 ;
+		Long contact = (long) 2;
+        List<ContentMenssage> msg = contentMenssageService.listarConversas(user, contact) ;
+		
+		if(msg.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+
+		
+		return new ResponseEntity<>(msg,HttpStatus.OK);
+		
+		
+	}
 }

@@ -16,9 +16,17 @@ insert into contact (contact_name,id_contact_user,user_id) values('Messi','3',1)
 
 insert into contact (contact_name,id_contact_user,user_id) values('Renan','1',3);
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg) values ('olá amigo !',3,1,'true');
+insert into contact (contact_name,id_contact_user,user_id) values('Renan','1',2);
+insert into contact (contact_name,id_contact_user,user_id) values('Robson','2',1);
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg) values ('Fala cara !',1,3,'true');
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('olá amigo !',3,1,'true','true','true');
+
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('Fala cara !',1,3,'true','true','true');
+
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('Como vai amg !',1,2,'true','true','true');
+
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('vou bem !',2,1,'true','true','true');
+
 
 
 

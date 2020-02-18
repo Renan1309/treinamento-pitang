@@ -10,5 +10,7 @@ public interface ContentMenssageService {
 	
 	public List<ContentMenssage> findAllMenssageId(Long id);
 	
+	public List<ContentMenssage>  listarConversas(Long id_user , Long id_contact);
+	
 	
 }

@@ -5,13 +5,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.UserService;
@@ -19,6 +18,14 @@ import com.pitang.aula.servc.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+	
+	//adicionei o service do token
+	
+	@Autowired
+	private TokenServiceJwtImpl tokenServiceJwtImpl ;
+
+	
+	//adicionei o service do token
 	
 	@Autowired
 	private UserModelRepository userRepository ;
@@ -134,6 +141,20 @@ public class UserServiceImpl implements UserService {
 		
 		System.out.print(senha);
 		return senha;
+	}
+	
+	
+    //METODO CRIADO PARA AUTENTICACAO FALTANDO IMPLEMENTAR OS VERIFICADORES
+	@Override
+	public UsuarioForm authentication(UsuarioForm usuarioForm) {
+		//colocar validacao do objeto
+		UserModel user = userRepository.findByEmail(usuarioForm.getEmail());
+		
+		//vaerificar se o objeto retornado foi null caso for nem chama a funcao do jwt
+		String tokenreturn = tokenServiceJwtImpl.generateToken(user);
+		
+		System.out.println("Esse e o token ===> "+ tokenreturn);
+		return null;
 	}
 
 	

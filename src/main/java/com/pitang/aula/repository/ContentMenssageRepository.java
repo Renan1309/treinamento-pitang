@@ -10,6 +10,15 @@ public interface ContentMenssageRepository extends JpaRepository<ContentMenssage
 	
 	List<ContentMenssage> findByIdusermsg(Long id) ;
 	
+    List<ContentMenssage> findByIdusercontact(Long idusercontact);
+    
+    List<ContentMenssage> findByIdusermsgAndIdusercontact(Long idusermsg ,Long idusercontact);
+    
+    
+
+    
+
+	
 	//List<ContentMenssage> findByIdusermsgAndIdfonecontact(String foneid);
 	
 }

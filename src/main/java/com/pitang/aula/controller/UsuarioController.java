@@ -139,5 +139,20 @@ public class UsuarioController {
 		return new ResponseEntity<>(HttpStatus.OK);
 		
 	}
-
+	
+	//METODO DO AUTENTICCA
+	@RequestMapping(value = "/aut", method = RequestMethod.POST)
+	@ResponseBody
+	                   
+	public ResponseEntity<?> autentica(@RequestBody UsuarioForm userform) {
+		
+		
+		
+		 userService.authentication(userform);
+		return null;
+		
+		
+		
+	}
+    //METODO DO AUTENTICA
 }
