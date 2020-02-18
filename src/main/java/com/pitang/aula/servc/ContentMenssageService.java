@@ -12,5 +12,7 @@ public interface ContentMenssageService {
 	
 	public List<ContentMenssage>  listarConversas(Long id_user , Long id_contact);
 	
+	public List<ContentMenssage> listarMensagensAtivas(Long id_user , Long id_contact, Boolean statusSend);
+	
 	
 }

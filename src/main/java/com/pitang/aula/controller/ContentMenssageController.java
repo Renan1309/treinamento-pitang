@@ -51,7 +51,11 @@ public class ContentMenssageController {
 		
 		Long user = (long) 1 ;
 		Long contact = (long) 2;
-        List<ContentMenssage> msg = contentMenssageService.listarConversas(user, contact) ;
+		Boolean status = true ;
+        //List<ContentMenssage> msg = contentMenssageService.listarConversas(user, contact) ;
+		
+		List<ContentMenssage> msg = contentMenssageService.listarMensagensAtivas(user, contact , status) ;
+		
 		
 		if(msg.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

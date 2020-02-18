@@ -36,13 +36,33 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		
 		Long user = (long) 1 ;
 		Long contact = (long) 2;
-		List<ContentMenssage>  msg_user_content =   contentMenssageRepository.findByIdusercontact(user);
-		 List<ContentMenssage> msg_user =  contentMenssageRepository.findByIdusermsgAndIdusercontact(user,contact) ;
+		//List<ContentMenssage>  msg_user_content =   contentMenssageRepository.findByIdusercontactAndIdusermsg(user, contact);
+		// List<ContentMenssage> msg_user =  contentMenssageRepository.findByIdusermsgAndIdusercontact(user,contact) ;
 		
-		 List<ContentMenssage>  concatenaLista = new ArrayList(msg_user.size()+ msg_user_content.size());
+		// List<ContentMenssage>  concatenaLista = new ArrayList(msg_user.size()+ msg_user_content.size());
+		//List<ContentMenssage>  concatenaLista = contentMenssageRepository.findByIdusercontactAndIdusermsgOrIdusermsgAndIdusercontact(user, contact) ;
+		//concatenaLista.addAll(msg_user_content);
+		//concatenaLista.addAll(msg_user);
 		
-		concatenaLista.addAll(msg_user_content);
-		concatenaLista.addAll(msg_user);
+		List<ContentMenssage>  concatenaLista  = contentMenssageRepository.findconversas(user,contact);
+		return concatenaLista;
+		//return null ;
+	}
+
+	@Override
+	public List<ContentMenssage> listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend) {
+		// TODO Auto-generated method stub
+		Long user = (long) 1 ;
+		Long contact = (long) 2;
+		Boolean statusSender = true ;
+		List<ContentMenssage>  msg_user_send =   contentMenssageRepository.findconversasEnviadasPeloSend(user, contact, statusSender);
+		List<ContentMenssage>  msg_content =   contentMenssageRepository.findconversasEnviadasPeloContent(user, contact, statusSender);
+		
+		List<ContentMenssage>  concatenaLista = new ArrayList(msg_user_send.size()+ msg_content.size()); ;
+		
+		concatenaLista.addAll(msg_user_send);
+		concatenaLista.addAll(msg_content);
+		
 		
 		return concatenaLista;
 	}
