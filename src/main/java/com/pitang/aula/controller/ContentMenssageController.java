@@ -5,6 +5,7 @@ import java.util.List;
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,16 +46,11 @@ public class ContentMenssageController {
 	}
 	
 	
-	@RequestMapping(value = "/mensagelist", method = RequestMethod.GET)
+	@RequestMapping(value = "/mensagens/user/{id_user}/contact/{id_contact}/status/{statusmsg}", method = RequestMethod.GET)
 	@ResponseBody
-	 public ResponseEntity <List<ContentMenssage>>  listconversa() {
+	 public ResponseEntity <List<ContentMenssage>>  listconversa(@PathVariable("id_user") Long id_user , @PathVariable("id_contact") Long id_contact ,@PathVariable("statusmsg") Boolean statusmsg ) {
 		
-		Long user = (long) 1 ;
-		Long contact = (long) 2;
-		Boolean status = true ;
-        //List<ContentMenssage> msg = contentMenssageService.listarConversas(user, contact) ;
-		
-		List<ContentMenssage> msg = contentMenssageService.listarMensagensAtivas(user, contact , status) ;
+		List<ContentMenssage> msg = contentMenssageService.listarMensagensAtivas(id_user, id_contact , statusmsg) ;
 		
 		
 		if(msg.size() == 0) {

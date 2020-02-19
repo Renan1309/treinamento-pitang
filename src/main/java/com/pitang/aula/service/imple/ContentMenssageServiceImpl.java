@@ -52,19 +52,20 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	@Override
 	public List<ContentMenssage> listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend) {
 		// TODO Auto-generated method stub
-		Long user = (long) 1 ;
-		Long contact = (long) 2;
-		Boolean statusSender = true ;
-		List<ContentMenssage>  msg_user_send =   contentMenssageRepository.findconversasEnviadasPeloSend(user, contact, statusSender);
-		List<ContentMenssage>  msg_content =   contentMenssageRepository.findconversasEnviadasPeloContent(user, contact, statusSender);
 		
-		List<ContentMenssage>  concatenaLista = new ArrayList(msg_user_send.size()+ msg_content.size()); ;
+		List<ContentMenssage>  msg_user_send =   contentMenssageRepository.findconversasEnviadasPeloSend(id_user, id_contact, statusSend);
+		List<ContentMenssage>  msg_content =   contentMenssageRepository.findconversasEnviadasPeloContact(id_user, id_contact, statusSend);
 		
-		concatenaLista.addAll(msg_user_send);
-		concatenaLista.addAll(msg_content);
+		//List<ContentMenssage>  listaMensagensOk = new ArrayList(msg_user_send.size());
+		//List<ContentMenssage>  listaMensagensOk = new ArrayList( msg_content.size()); ;
+		List<ContentMenssage>  listaMensagensOk = new ArrayList(msg_user_send.size()+ msg_content.size()); ;
+
+		
+		listaMensagensOk.addAll(msg_user_send);
+		listaMensagensOk.addAll(msg_content);
 		
 		
-		return concatenaLista;
+		return listaMensagensOk;
 	}
 
 }

@@ -21,8 +21,8 @@ public interface ContentMenssageRepository extends JpaRepository<ContentMenssage
     @Query(value = "select * from content_menssage where id_user_msg = ?1 and id_user_contact = ?2  and status_send = ?3 ", nativeQuery = true)
     List<ContentMenssage> findconversasEnviadasPeloSend(Long idusersend ,Long idusercontact, Boolean statusSender );
     
-    @Query(value = "select * from content_menssage where id_user_msg = ?2 and id_user_contact = ?1  and status_send = ?3 ", nativeQuery = true)
-    List<ContentMenssage> findconversasEnviadasPeloContent(Long idusersend ,Long idusercontact, Boolean statusRecipient );
+    @Query(value = "select * from content_menssage where id_user_msg = ?2 and id_user_contact = ?1  and status_recipient = ?3 ", nativeQuery = true)
+    List<ContentMenssage> findconversasEnviadasPeloContact(Long idusersend ,Long idusercontact, Boolean statusRecipient );
     
     
     

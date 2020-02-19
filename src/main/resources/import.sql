@@ -23,14 +23,13 @@ insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg
 
 insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('Fala cara !',1,3,'true','true','true');
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('Como vai amg !',1,2,'true','true','true');
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('Como vai amg !',1,2,'true','false','true');
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('vou bem !',2,1,'true','true','true');
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('vou bem !',2,1,'true','false','true'); 
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('vamos jogar !',1,2,'true','false','true');
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('vamos jogar !',1,2,'true','true','true');
 
-insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('aonde ?',2,1,'true','true','false');
-
+insert into content_menssage (content_msg,id_user_contact,id_user_msg,status_msg,status_send,status_recipient) values ('aonde ?',2,1,'true','true','true');
 
 
 
