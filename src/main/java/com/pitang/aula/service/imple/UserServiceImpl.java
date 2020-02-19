@@ -20,12 +20,11 @@ import com.pitang.aula.servc.UserService;
 public class UserServiceImpl implements UserService {
 	
 	//adicionei o service do token
-	
 	@Autowired
 	private TokenServiceJwtImpl tokenServiceJwtImpl ;
 
 	
-	//adicionei o service do token
+
 	
 	@Autowired
 	private UserModelRepository userRepository ;

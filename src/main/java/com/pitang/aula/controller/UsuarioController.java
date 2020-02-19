@@ -8,16 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-
-import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.dto.ContactDto;
-import com.pitang.aula.dto.ReturnData;
+import com.pitang.aula.dto.TokenDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.dto.UsuarioForm;
+import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.servc.ContactService;
@@ -144,12 +143,15 @@ public class UsuarioController {
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	@ResponseBody
 	                   
-	public ResponseEntity<String> autentica(@RequestBody UsuarioForm userform) {
+	public ResponseEntity<TokenDto> autentica(@RequestBody UsuarioForm userform) {
 		
 		
 		
 		String token =  userService.authentication(userform);
-		 return new ResponseEntity<>(token , HttpStatus.OK);
+		TokenDto tokenDto = new TokenDto();
+		tokenDto.setType("Bearer");
+		tokenDto.setToken(token);
+		 return new ResponseEntity<>(tokenDto, HttpStatus.OK);
 		
 		
 		
