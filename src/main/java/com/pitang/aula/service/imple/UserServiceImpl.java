@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 	
     //METODO CRIADO PARA AUTENTICACAO FALTANDO IMPLEMENTAR OS VERIFICADORES
 	@Override
-	public UsuarioForm authentication(UsuarioForm usuarioForm) {
+	public String authentication(UsuarioForm usuarioForm) {
 		//colocar validacao do objeto
 		UserModel user = userRepository.findByEmail(usuarioForm.getEmail());
 		
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 		String tokenreturn = tokenServiceJwtImpl.generateToken(user);
 		
 		System.out.println("Esse e o token ===> "+ tokenreturn);
-		return null;
+		return tokenreturn;
 	}
 
 	

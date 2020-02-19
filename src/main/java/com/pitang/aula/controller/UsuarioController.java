@@ -141,15 +141,15 @@ public class UsuarioController {
 	}
 	
 	//METODO DO AUTENTICCA
-	@RequestMapping(value = "/aut", method = RequestMethod.POST)
+	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	@ResponseBody
 	                   
-	public ResponseEntity<?> autentica(@RequestBody UsuarioForm userform) {
+	public ResponseEntity<String> autentica(@RequestBody UsuarioForm userform) {
 		
 		
 		
-		 userService.authentication(userform);
-		return null;
+		String token =  userService.authentication(userform);
+		 return new ResponseEntity<>(token , HttpStatus.OK);
 		
 		
 		

@@ -27,7 +27,7 @@ import io.jsonwebtoken.Jwts;
 public class AutenticacaoController {
 	
 	
-	@RequestMapping(value = "/auth", method = RequestMethod.POST)
+	@RequestMapping(value = "/authe", method = RequestMethod.POST)
 	@ResponseBody
       public ResponseEntity  autenticar(@RequestBody LoginForm loginform) {
 		return null;

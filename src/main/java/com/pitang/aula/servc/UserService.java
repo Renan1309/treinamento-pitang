@@ -20,5 +20,5 @@ public interface UserService {
 
 	void deleteUser(Long id);
 	
-	public UsuarioForm authentication(UsuarioForm usuarioForm);
+	public String authentication(UsuarioForm usuarioForm);
 }
