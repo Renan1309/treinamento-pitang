@@ -14,5 +14,7 @@ public interface ContentMenssageService {
 	
 	public List<ContentMenssage> listarMensagensAtivas(Long id_user , Long id_contact, Boolean statusSend);
 	
+	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage);
+	
 	
 }

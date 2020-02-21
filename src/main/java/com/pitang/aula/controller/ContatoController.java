@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +54,9 @@ public class ContatoController {
 	
 	@RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
 	@ResponseBody
-      public ResponseEntity <List<ContactDto>>  listContatosUsuario(@PathVariable("id") Long id) {
+      public ResponseEntity <List<ContactDto>>  listContatosUsuario( @RequestHeader("Authorization") String tokenjwt ,@PathVariable("id") Long id) {
+		
+		System.out.println("O token interceptado na roda /contato/id => " + tokenjwt);
            List<Contact> contacts = contactService.userContacts(id) ;
 		
 		if(contacts.size() == 0) {

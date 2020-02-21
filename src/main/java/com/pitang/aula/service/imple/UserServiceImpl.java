@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.pitang.aula.dto.UsuarioForm;
+import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.UserService;
@@ -39,8 +40,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserModel findByUserByUserName(String usu_name) {
-		return null;
+	public UserModel findByUserByUserName(String usu_email) {
+		if(usu_email == null) {
+			System.out.println("email veio null");
+			return null;
+		}
+		UserModel user = userRepository.findByEmail(usu_email);
+		if(user == null) {
+			System.out.println("email não corresponde na base");
+		}
+		
+		return user ;
 	}
 	
 	@Override
@@ -102,18 +112,18 @@ public class UserServiceImpl implements UserService {
 	//check de campos se algum veio vazio
 	private void checkUser(UserModel user) {
 		if(user == null) {
-			//throw new ExceptionBadRequest("Usuário não pode ser nulo!");
-			System.out.println("Usuário enviado nulo !");
+			
+			throw new ExceptionBadRequest("Usuário enviado nulo !");
 		}
 		if(StringUtils.isEmpty(user.getEmail())){
 			
-			System.out.println("O email não pode ser vazio!");
+			throw new ExceptionBadRequest("O email não pode ser vazio!");
 		}
 		if(StringUtils.isEmpty(user.getName())) {
-			System.out.println("O nome não pode ser vazio!");
+			throw new ExceptionBadRequest("O nome não pode ser vazio!");
 		}
 		if(StringUtils.isEmpty(user.getPassword())) {
-			System.out.print("A senha não pode ser enviada vazio");
+			throw new ExceptionBadRequest("A senha não pode ser enviada vazio");
 		} 
 	}
 	
@@ -156,6 +166,9 @@ public class UserServiceImpl implements UserService {
 		return tokenreturn;
 	}
 
+	
+	
+	
 	
 	
 	

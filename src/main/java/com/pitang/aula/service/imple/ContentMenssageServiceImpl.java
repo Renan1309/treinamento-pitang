@@ -2,7 +2,10 @@ package com.pitang.aula.service.imple;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.swing.text.AbstractDocument.Content;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,17 +58,26 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		
 		List<ContentMenssage>  msg_user_send =   contentMenssageRepository.findconversasEnviadasPeloSend(id_user, id_contact, statusSend);
 		List<ContentMenssage>  msg_content =   contentMenssageRepository.findconversasEnviadasPeloContact(id_user, id_contact, statusSend);
-		
-		//List<ContentMenssage>  listaMensagensOk = new ArrayList(msg_user_send.size());
-		//List<ContentMenssage>  listaMensagensOk = new ArrayList( msg_content.size()); ;
+	
 		List<ContentMenssage>  listaMensagensOk = new ArrayList(msg_user_send.size()+ msg_content.size()); ;
 
 		
 		listaMensagensOk.addAll(msg_user_send);
 		listaMensagensOk.addAll(msg_content);
 		
+		//Lista<ContentMessage> lista = new ArrayList<ContentMenssage>(listaMensagensOK);
+		listaMensagensOk.sort(Comparator.comparing(ContentMenssage::getDatamsg));
+		
 		
 		return listaMensagensOk;
+	}
+
+	@Override
+	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage) {
+		
+		//contentMenssageRepository.save(contentMenssage);
+		
+		return contentMenssageRepository.save(contentMenssage);
 	}
 
 }

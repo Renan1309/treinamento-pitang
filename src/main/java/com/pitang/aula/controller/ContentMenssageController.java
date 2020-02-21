@@ -6,12 +6,14 @@ import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pitang.aula.dto.ContactDto;
+import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
@@ -56,6 +58,19 @@ public class ContentMenssageController {
 		if(msg.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+		
+
+		
+		return new ResponseEntity<>(msg,HttpStatus.OK);
+		
+		
+	}
+	
+	@RequestMapping(value = "/mensage/new", method = RequestMethod.POST)
+	@ResponseBody
+	 public ResponseEntity <ContentMenssage>  enviarMenssage(@RequestBody ContentMenssage contentMenssage) {
+		
+		ContentMenssage msg = contentMenssageService.enviarMenssage(contentMenssage) ;
 		
 
 		

@@ -17,24 +17,45 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pitang.aula.dto.LoginForm;
+import com.pitang.aula.dto.TokenDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.UserModel;
+import com.pitang.aula.servc.ContactService;
+import com.pitang.aula.servc.UserService;
 
 import io.jsonwebtoken.Jwts;
 
 @RestController
 public class AutenticacaoController {
 	
+	private UserService userService;
 	
-	@RequestMapping(value = "/authe", method = RequestMethod.POST)
-	@ResponseBody
-      public ResponseEntity  autenticar(@RequestBody LoginForm loginform) {
-		return null;
-		//UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken(loginform.getEmail(), loginform.getSenha());
 	
+	public  AutenticacaoController (UserService userService ) {
+		super();
+		this.userService = userService ;
 		
 	}
+	
+		@RequestMapping(value = "/autentica", method = RequestMethod.POST)
+		@ResponseBody
+		                   
+		public ResponseEntity<TokenDto> autentica(@RequestBody UsuarioForm userform) {
+			
+			
+			
+			String token =  userService.authentication(userform);
+			TokenDto tokenDto = new TokenDto();
+			tokenDto.setType("Bearer");
+			tokenDto.setToken(token);
+			return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+			
+			
+			
+		}
+
 	
 	
 	

@@ -151,7 +151,7 @@ public class UsuarioController {
 		TokenDto tokenDto = new TokenDto();
 		tokenDto.setType("Bearer");
 		tokenDto.setToken(token);
-		 return new ResponseEntity<>(tokenDto, HttpStatus.OK);
+		return new ResponseEntity<>(tokenDto, HttpStatus.OK);
 		
 		
 		

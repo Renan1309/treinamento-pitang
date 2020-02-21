@@ -21,4 +21,6 @@ public interface UserService {
 	void deleteUser(Long id);
 	
 	public String authentication(UsuarioForm usuarioForm);
+	
+	//public Boolean validarIdentidadeUsuario();
 }

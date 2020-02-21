@@ -1,13 +1,22 @@
 package com.pitang.aula.model;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "content_menssage")
@@ -42,10 +51,18 @@ public class ContentMenssage {
 	@Column(name = "status_recipient")
 	private Boolean statusRecipient ;
 	
-	// @Temporal(TemporalType.TIMESTAMP)
-	// private Date cadastro; 
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "datamsg" , insertable = false , columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Date datamsg; 
+	
 	
 	//SELECT contentmsg FROM content_menssage where id_us
+	
+	// @PrePersist
+	//  protected void onCreate() {
+	//    datamsg = new Date();
+	//  }
 
 	public Boolean getStatusmsg() {
 		return statusmsg;
@@ -79,9 +96,6 @@ public class ContentMenssage {
 		this.idusermsg = idusermsg;
 	}
 
-
-	
-
 	public Long getIdusercontact() {
 		return idusercontact;
 	}
@@ -105,6 +119,18 @@ public class ContentMenssage {
 	public void setContentmsg(String contentmsg) {
 		this.contentmsg = contentmsg;
 	}
+
+	public Date getDatamsg() {
+		return datamsg;
+	}
+
+	public void setDatamsg(Date datamsg) {
+		this.datamsg = datamsg;
+	}
+
+	
+
+	
 
 	
 	
