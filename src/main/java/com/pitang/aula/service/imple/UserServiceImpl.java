@@ -24,9 +24,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TokenServiceJwtImpl tokenServiceJwtImpl ;
 
-	
-
-	
 	@Autowired
 	private UserModelRepository userRepository ;
 

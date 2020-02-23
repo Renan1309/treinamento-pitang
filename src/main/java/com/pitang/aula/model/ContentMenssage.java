@@ -40,20 +40,20 @@ public class ContentMenssage {
 	private Long idusercontact ;
 	
 	@NotNull
-	@Column(name = "status_msg")
-	private Boolean statusmsg;
+	@Column(name = "status_msg" )
+	private Boolean statusmsg  = true;
 	
 	@NotNull
-	@Column(name = "status_send")
-	private Boolean statusSend ;
+	@Column(name = "status_send" )
+	private Boolean statusSend  = true ;
 	
 	@NotNull
-	@Column(name = "status_recipient")
-	private Boolean statusRecipient ;
+	@Column(name = "status_recipient" )
+	private Boolean statusRecipient = true;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "datamsg" , insertable = false , columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "datamsg"  , columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date datamsg; 
 	
 	

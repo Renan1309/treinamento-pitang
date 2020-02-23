@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Table(name = "user")
 public class UserModel {
 	
-	//private Picture Foto ;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id ;
@@ -46,6 +46,12 @@ public class UserModel {
 	@NotNull
 	@Column(name = "user_status")
 	private boolean status ;
+	 
+	
+	//@Column(name = "user_image")
+	//private String pathImage ;
+	
+	
 	
 	
 	
@@ -53,6 +59,11 @@ public class UserModel {
 			   cascade = CascadeType.ALL,
 			   mappedBy = "userModel")
 	private List<Contact> contact;
+	
+	@OneToMany(fetch = FetchType.LAZY ,
+			   cascade = CascadeType.ALL,
+			   mappedBy = "userModel")
+	private List<Story> story;
 
 
 

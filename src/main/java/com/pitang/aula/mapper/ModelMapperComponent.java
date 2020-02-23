@@ -8,8 +8,11 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 import com.pitang.aula.dto.ContactDto;
+import com.pitang.aula.dto.ContentMenssageDto;
+import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.model.Contact;
+import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.model.UserModel;
 
 
@@ -67,8 +70,31 @@ public class ModelMapperComponent {
                     protected void configure() {
                     	map().setIdUserContact(source.getIdUserContact());
                     	map().setName(source.getName());
-                    	skip().setUserModel(null);
+                    	skip().setUserModel(null);	
+                    }
+                });
+        
+        modelMapper.addMappings(
+                new PropertyMap<ContentMenssageDto , ContentMenssage>() {
+                    @Override
+                    protected void configure() {
+                    	map().setContentmsg(source.getContentmsg());
+                    	map().setIdusermsg(source.getIdusermsg());
+                    	map().setIdusercontact(source.getIdusercontact());
                     	
+                    	
+                    }
+                });
+        
+        modelMapper.addMappings(
+                new PropertyMap<MessageDto , ContentMenssage>() {
+                    @Override
+                    protected void configure() {
+                    	map().setId(source.getId());
+                    	map().setIdusermsg(source.getIdusermsg());
+                    	map().setIdusercontact(source.getIdusercontact());
+                    	map().setStatusSend(source.getStatusSend());
+                    	map().setStatusRecipient(source.getStatusRecipient());
                     	
                     }
                 });
