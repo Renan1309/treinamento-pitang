@@ -18,7 +18,7 @@ import com.pitang.aula.servc.TokenServiceJwt;
 import com.pitang.aula.service.imple.JwtUserDetailsServiceImpl;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
-		// fazemos a heranca da classe OncePerRequestFilter que é  um filtron do Spring que chamado uma vez a cada requisicao
+     // fazemos a heranca da classe OncePerRequestFilter que é  um filtron do Spring que chamado uma vez a cada requisicao
 	
 	//não e possivel botar autowrite em filter 
 	
@@ -55,6 +55,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 		// TODO Auto-generated method stub
 			Long idUsuario = tokenServiceJwt.getIdUser(token);
 			UserModel usuario = userModelRepository.findById(idUsuario).get();
+			
 			final UserDetails userDetails = jwtUserDetailsServiceImpl
 
 	                .loadUserByUsername(usuario.getEmail());

@@ -18,5 +18,7 @@ public interface ContentMenssageService {
 	
 	public ContentMenssage deletarMensagemIndividual(Long id ,ContentMenssage contentMenssage);
 	
+	public ContentMenssage deletarMensagem(Long id , ContentMenssage contentMenssage);
+	
 	
 }

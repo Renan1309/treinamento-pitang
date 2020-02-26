@@ -48,13 +48,37 @@ public class UserModel {
 	private boolean status ;
 	 
 	
-	//@Column(name = "user_image")
-	//private String pathImage ;
+    @Column(name = "user_image")
+	private String pathImage ;
 	
 	
 	
 	
 	
+	public String getPathImage() {
+		return pathImage;
+	}
+
+
+
+	public void setPathImage(String pathImage) {
+		this.pathImage = pathImage;
+	}
+
+
+
+	public List<Story> getStory() {
+		return story;
+	}
+
+
+
+	public void setStory(List<Story> story) {
+		this.story = story;
+	}
+
+
+
 	@OneToMany(fetch = FetchType.LAZY ,
 			   cascade = CascadeType.ALL,
 			   mappedBy = "userModel")

@@ -1,17 +1,28 @@
 package com.pitang.aula.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.TokenDto;
 import com.pitang.aula.dto.UserDto;
@@ -68,18 +79,28 @@ public class UsuarioController {
 		
 	}
 	
-	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	@RequestMapping(value = "/user", method = RequestMethod.POST )
 	@ResponseBody
 	                   
-	public ResponseEntity<UserDto> cadastrarUsuario(@RequestBody UserDto userdto) {
+	public ResponseEntity<UserDto> cadastrarUsuario(@RequestParam("file") MultipartFile file ,@RequestParam("userdtopost") String userdtopost) throws IOException {
 		
+		ObjectMapper objectMapper = new ObjectMapper();
+	    UserDto userdto = null;
+        userdto = objectMapper.readValue(userdtopost, UserDto.class);
+		
+       
+		if (file.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 		if(userdto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 		}
+		
+		
 		UserModel userModel = ModelMapperComponent.modelMapper.map(userdto, new TypeToken<UserModel>() {}.getType());
 		
-		userModel  = userService.creatUser(userModel);
+		userModel  = userService.creatUser(file , userModel);
 		
 		userdto = ModelMapperComponent.modelMapper.map(userModel, new TypeToken<UserDto>() {}.getType());
 		
@@ -157,4 +178,7 @@ public class UsuarioController {
 		
 	}
     //METODO DO AUTENTICA
+
+	
+
 }

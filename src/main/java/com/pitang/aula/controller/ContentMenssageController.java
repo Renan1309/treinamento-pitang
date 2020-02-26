@@ -80,9 +80,9 @@ public class ContentMenssageController {
 
 	}
 	
-	@RequestMapping(value = "/message/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/message/user/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<ContentMenssage> changeUsuario(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+	public ResponseEntity<ContentMenssage> deletarMensagemIndividual(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
 		
 		if(messageDto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -90,6 +90,20 @@ public class ContentMenssageController {
 		
 		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
 		ContentMenssage msg = contentMenssageService.deletarMensagemIndividual(id , contentMenssage);		
+		return new ResponseEntity<>( msg ,HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/message/delete/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<ContentMenssage> deletarMesagemGeral(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+		
+		if(messageDto == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+		
+		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
+		ContentMenssage msg = contentMenssageService.deletarMensagem(id , contentMenssage);		
 		return new ResponseEntity<>( msg ,HttpStatus.OK);
 		
 	}

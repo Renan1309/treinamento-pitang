@@ -81,20 +81,36 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		// TODO Auto-generated method stub
 		ContentMenssage messageOriginal = contentMenssageRepository.findById(contentMenssage.getId()).get();
 		if (messageOriginal == null) {
-			throw new ExceptionBadRequest("Menssagem não existe !");
+			throw new ExceptionBadRequest("Mensagem não existe !");
 		}
-	
-		if(id == contentMenssage.getIdusermsg() && messageOriginal.getIdusermsg() == contentMenssage.getIdusermsg()) {
+
+		if (id == contentMenssage.getIdusermsg() && messageOriginal.getIdusermsg() == contentMenssage.getIdusermsg()) {
 			messageOriginal.setStatusSend(contentMenssage.getStatusSend());
-		}
-		else if (id != contentMenssage.getIdusermsg()) {
-			messageOriginal.setStatusRecipient(contentMenssage.getStatusRecipient());;
+		} else if (id != contentMenssage.getIdusermsg()) {
+			messageOriginal.setStatusRecipient(contentMenssage.getStatusRecipient());
+			
 		}
 		contentMenssageRepository.save(messageOriginal);
-			
+
 		return contentMenssageRepository.save(messageOriginal);
 	}
 
-	
+	@Override
+	public ContentMenssage deletarMensagem(Long id, ContentMenssage contentMenssage) {
+		// TODO Auto-generated method stub
+		ContentMenssage messageOriginal = contentMenssageRepository.findById(contentMenssage.getId()).get();
+		if (messageOriginal == null) {
+			throw new ExceptionBadRequest("Menssagem não existe !");
+		}
+		if (id == contentMenssage.getIdusermsg() && messageOriginal.getIdusermsg() == contentMenssage.getIdusermsg()) {
+			messageOriginal.setStatusSend(false);
+			messageOriginal.setStatusRecipient(false);
+		} else {
+			throw new ExceptionBadRequest("Você não é o dono dessa mensagem!");
+		}
+		contentMenssageRepository.save(messageOriginal);
+
+		return contentMenssageRepository.save(messageOriginal);
+	}
 
 }

@@ -1,7 +1,10 @@
 package com.pitang.aula.servc;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.model.UserModel;
@@ -14,7 +17,7 @@ public interface UserService {
 	
 	public UserModel findByUserById(Long id_usu);
 	
-	public UserModel creatUser(UserModel user);
+	public UserModel creatUser(MultipartFile file , UserModel user);
 	
 	public UserModel updateUser(Long id, UserModel userChange);
 
