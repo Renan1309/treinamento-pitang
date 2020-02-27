@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.model.UserModel;
 
@@ -26,6 +27,8 @@ public interface UserService {
 	public String authentication(UsuarioForm usuarioForm);
 	
 	public String guardarArquivo(MultipartFile file , UserModel user);
+	
+	public  UserDto  bytesDaImagem(UserDto userdto , String diretoriodaimagem);
 	
 	//public Boolean validarIdentidadeUsuario();
 }

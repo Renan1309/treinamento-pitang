@@ -50,7 +50,8 @@ public class UserModel {
 	
     @Column(name = "user_image")
 	private String pathImage ;
-	
+    
+   
 	
     @OneToMany(fetch = FetchType.LAZY ,
 			   cascade = CascadeType.ALL,
@@ -62,8 +63,6 @@ public class UserModel {
 			   mappedBy = "userModel")
 	private List<Story> story;
 
-	
-	
 	public String getPathImage() {
 		return pathImage;
 	}

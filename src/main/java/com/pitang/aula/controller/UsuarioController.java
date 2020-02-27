@@ -7,8 +7,11 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.User;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +39,15 @@ import com.pitang.aula.servc.UserService;
 @RestController
 public class UsuarioController {
 	
+	private HttpServletRequest request;
 	private UserService userService;
 	private ContactService contactService ;
 	
-	public UsuarioController(UserService userService , ContactService contactService) {
+	public UsuarioController(UserService userService , ContactService contactService , HttpServletRequest request) {
 		super();
 		this.userService = userService ;
 		this.contactService = contactService ;
+		this.request = request ;
 	}
 	
 	
@@ -56,6 +61,8 @@ public class UsuarioController {
 		}
 		
 		List<UserDto> usersDto = ModelMapperComponent.modelMapper.map(users, new TypeToken<List<UserDto>>() {}.getType());
+		
+		
 		return new ResponseEntity<>(usersDto,HttpStatus.OK);
 		
 		
@@ -104,6 +111,9 @@ public class UsuarioController {
 		
 		userdto = ModelMapperComponent.modelMapper.map(userModel, new TypeToken<UserDto>() {}.getType());
 		
+		//////retornando array de byte
+		userdto = userService.bytesDaImagem(userdto, userModel.getPathImage());
+	   //////retornando array de byte
 		return new ResponseEntity<>(userdto,HttpStatus.OK);
 		
 		

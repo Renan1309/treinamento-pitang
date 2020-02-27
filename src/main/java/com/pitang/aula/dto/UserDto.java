@@ -11,10 +11,17 @@ public class UserDto {
 	private String password ;
 	private String status;
 	private String pathImage;
+	private byte[] imagebyte ;
 	
 	
 	
 	
+	public byte[] getImagebyte() {
+		return imagebyte;
+	}
+	public void setImagebyte(byte[] imagebyte) {
+		this.imagebyte = imagebyte;
+	}
 	public String getPathImage() {
 		return pathImage;
 	}
