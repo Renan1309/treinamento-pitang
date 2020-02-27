@@ -25,5 +25,7 @@ public interface UserService {
 	
 	public String authentication(UsuarioForm usuarioForm);
 	
+	public String guardarArquivo(MultipartFile file , UserModel user);
+	
 	//public Boolean validarIdentidadeUsuario();
 }

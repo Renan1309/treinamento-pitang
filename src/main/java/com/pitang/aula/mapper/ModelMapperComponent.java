@@ -35,6 +35,7 @@ public class ModelMapperComponent {
                     	map().setEmail(source.getEmail());
                     	map().setName((source.getName()));
                     	map().setSurname(source.getSurname());
+                    	map().setPathImage(source.getPathImage());
                         when(Conditions.isNotNull()).using(ModelConverter.convertStatus).map(source.isStatus()).setStatus(null);
                     }
                 });
@@ -47,6 +48,7 @@ public class ModelMapperComponent {
                     	map().setEmail(source.getEmail());
                     	map().setName((source.getName()));
                     	map().setSurname(source.getSurname());
+                    	map().setPathImage(source.getPathImage());
                         when(Conditions.isNotNull()).using(ModelConverter.convertStatusToBoolean).map(source.getStatus()).setStatus(false);
                     }
                 });

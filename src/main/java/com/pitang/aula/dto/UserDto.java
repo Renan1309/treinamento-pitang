@@ -10,8 +10,17 @@ public class UserDto {
 	private String email ;
 	private String password ;
 	private String status;
+	private String pathImage;
 	
 	
+	
+	
+	public String getPathImage() {
+		return pathImage;
+	}
+	public void setPathImage(String pathImage) {
+		this.pathImage = pathImage;
+	}
 	public String getPassword() {
 		return password;
 	}

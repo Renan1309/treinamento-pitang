@@ -76,20 +76,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel creatUser(MultipartFile file, UserModel user) {
 
-		// file.transferTo(new File ());
-		String UPLOADED_FOLDER = "C:\\Users\\renan\\Documents\\workspace-spring-tool-suite-4-4.5.1.RELEASE\\image\\";
-		String pathdorequest = request.getServletContext().getRealPath("/");
-		System.out.println("Arquivo ========> path : "+pathdorequest );
-		try {
-			byte[] bytes;
-			bytes = file.getBytes();
-			Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-			Files.write(path, bytes);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 		String senha_encrypt = null;
 		checkUser(user);
 		validateUserCreat(user);
@@ -104,7 +90,12 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user.setPassword(senha_encrypt);
-		userRepository.save(user);
+		user = userRepository.save(user);
+		
+		String caminhoImage = guardarArquivo( file,  user); //metodo para guarda o arquivo
+		
+		user.setPathImage(caminhoImage);
+		
 		return userRepository.save(user);
 	}
 
@@ -197,7 +188,74 @@ public class UserServiceImpl implements UserService {
 		return tokenreturn;
 	}
 
+	@Override
+	public String guardarArquivo(MultipartFile file, UserModel user) {
+		
+		String  UPLOADED_FOLDER = request.getServletContext().getRealPath("/Images/");
+		System.out.println(UPLOADED_FOLDER);
+		
+		try {
+			byte[] bytes;
+			bytes = file.getBytes();
+			Path path = Paths.get(UPLOADED_FOLDER );
+			File dir = new File(UPLOADED_FOLDER );
+			
+			if (!Files.exists(path)) {
+					System.out.println("Arquivo ========> criou 1 : "+dir);
+				  
+					dir.mkdir();
+					path = Paths.get(UPLOADED_FOLDER +user.getId()+"_.png");
+					Files.write(path, bytes);
+					
+					//Files.write(pathz, bytes);
+					System.out.println("Arquivo ========> path 1: "+path);
+					
+					//recuperar
+					//byte[] bytesox;
+					//bytesox = file.getBytes();
+					//System.out.println(bytesox);
+					//String caminhoarq = path.toString() ;
+					//File filex =  new File(caminhoarq);
+					//bytesox = Files.readAllBytes(filex.toPath());
+					System.out.println("caminho criado e imagem 1 = "+path);
+					
+					
+			 }
+			else {
+				System.out.println("diretorio criado");
+				//Files.write(path, bytes);
+				path = Paths.get(UPLOADED_FOLDER +user.getId()+"_.png");
+				
+				
+				Files.write(path, bytes);
+				System.out.println("Arquivo ========> path 2: "+path);
+				
+				//recuperar
+				//byte[] bytesox;
+				//String caminhoarq = path.toString() ;
+				//File filex =  new File(caminhoarq);
+				//bytesox = Files.readAllBytes(filex.toPath());
+				//String textoDoArquivo = new String(bytesox, "UTF-8");
+				//System.out.println("ÄRQUIVO ===> "+textoDoArquivo );
+				System.out.println("caminho criado e imagem 2 = "+path);
+				String page1 = path.toString().substring(73);
+				System.out.println("path db : = "+ page1 );
+				
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		String caminhoimagemdb = "/Images/"+user.getId()+"_.png";
+		return caminhoimagemdb ;
+		
+	}
+
 }
+
+
 
 /*
  * // /^(\w+)@(\w+(\.\w{2,3})+)$/ String expression =

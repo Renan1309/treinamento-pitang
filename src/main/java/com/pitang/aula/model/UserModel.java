@@ -52,7 +52,16 @@ public class UserModel {
 	private String pathImage ;
 	
 	
+    @OneToMany(fetch = FetchType.LAZY ,
+			   cascade = CascadeType.ALL,
+			   mappedBy = "userModel")
+	private List<Contact> contact;
 	
+	@OneToMany(fetch = FetchType.LAZY ,
+			   cascade = CascadeType.ALL,
+			   mappedBy = "userModel")
+	private List<Story> story;
+
 	
 	
 	public String getPathImage() {
@@ -76,23 +85,6 @@ public class UserModel {
 	public void setStory(List<Story> story) {
 		this.story = story;
 	}
-
-
-
-	@OneToMany(fetch = FetchType.LAZY ,
-			   cascade = CascadeType.ALL,
-			   mappedBy = "userModel")
-	private List<Contact> contact;
-	
-	@OneToMany(fetch = FetchType.LAZY ,
-			   cascade = CascadeType.ALL,
-			   mappedBy = "userModel")
-	private List<Story> story;
-
-
-
-	
-
 
 	public Long getId() {
 		return id;
