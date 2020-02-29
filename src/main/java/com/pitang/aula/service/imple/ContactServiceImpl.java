@@ -71,12 +71,12 @@ public class ContactServiceImpl implements ContactService {
 
 
 	@Override
-	public String deleteContact(Long id) {
-		if(id == null || id == 0) {
+	public String deleteContact(Long id , Long idusercontact) {
+		if(id == null || id == 0 || idusercontact == null || idusercontact == 0) {
 			throw new ExceptionBadRequest("Id do contato inválido !");
 		}
-		Long id_user = (long) 1;
-		Contact contactDB = contactRepository.findByUserModelIdAndIdUserContact( id,id_user );
+		
+		Contact contactDB = contactRepository.findByUserModelIdAndIdUserContact( id, idusercontact );
 		if(contactDB == null) {
 			throw new ExceptionBadRequest("Contato não encontrado !");
 		}

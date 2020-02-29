@@ -17,5 +17,5 @@ public interface ContactService {
 	
 	public List<Contact> userContacts(Long id);
 	
-	public String deleteContact(Long id);
+	public String deleteContact(Long id , Long idusercontact);
 }

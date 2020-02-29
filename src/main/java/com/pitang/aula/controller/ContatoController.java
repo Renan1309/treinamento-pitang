@@ -70,15 +70,15 @@ public class ContatoController {
 		
 	}
 	
-	@RequestMapping(value = "/contact/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/contact/user/{id}/contact/{idcontato}", method = RequestMethod.DELETE)
 	@ResponseBody
-      public ResponseEntity <String>  DeleteContatoUsuario(@PathVariable("id") Long id) {
+      public ResponseEntity <String>  DeleteContatoUsuario(@PathVariable("id") Long id , @PathVariable("idcontato") Long idcontato) {
       
 		if(id == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
-		String retorno = contactService.deleteContact(id);
+		String retorno = contactService.deleteContact(id , idcontato);
 		return new ResponseEntity<>(retorno,HttpStatus.OK);
 		
 	}
