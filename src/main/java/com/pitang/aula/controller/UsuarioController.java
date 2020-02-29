@@ -80,6 +80,10 @@ public class UsuarioController {
 		//rt.setData(user);
 		//rt.setMensagemRetorno(mensagemRetorno);
 		UserDto usersDto = ModelMapperComponent.modelMapper.map(user, new TypeToken<UserDto>() {}.getType());
+		
+	     //////retornando array de byte
+		usersDto = userService.bytesDaImagem(usersDto, user.getPathImage());
+	    //////retornando array de byte
 
 		return new ResponseEntity<>(usersDto,HttpStatus.OK);
 		
@@ -155,6 +159,20 @@ public class UsuarioController {
 		user = userService.updateUser(id, user);
 		userdto = ModelMapperComponent.modelMapper.map(user, new TypeToken<UserDto>() {}.getType());
 		return new ResponseEntity<>(userdto , HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/user/image/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<String> alteraImagem(@PathVariable("id") Long id ,@RequestParam("file") MultipartFile file ) {
+		
+		if(file == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+		
+		String retorno = userService.alterarImagem(file, id);
+		
+		return new ResponseEntity<>(retorno , HttpStatus.OK);
 		
 	}
 	

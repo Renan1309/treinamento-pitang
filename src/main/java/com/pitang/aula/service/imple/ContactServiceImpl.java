@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.repository.ContactModelRepository;
@@ -36,7 +38,8 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public Contact creatContact(Contact contact) {
-		
+		checkContact(contact);
+		validarContato (contact);
 		return contactRepository.save(contact);
 	}
 
@@ -51,9 +54,14 @@ public class ContactServiceImpl implements ContactService {
 
 
 
-
+//Metodo para listar os contatos do usuario
 	@Override
 	public List<Contact> userContacts(Long id) {
+		UserModel userValido = userRepository.findById(id).get(); //verificando se o id informado contem um usuario valido
+		if( userValido == null) {
+			throw new ExceptionBadRequest("Usuario não encontrado");
+		}
+		
 		return  contactRepository.findByUserModelId(id);
 		// TODO Auto-generated method stub
 		//return (List<Contact>) contactRepository.findByuserModel_id(id);
@@ -64,14 +72,42 @@ public class ContactServiceImpl implements ContactService {
 
 	@Override
 	public String deleteContact(Long id) {
-
-		contactRepository.deleteById(id);
+		if(id == null || id == 0) {
+			throw new ExceptionBadRequest("Id do contato inválido !");
+		}
+		Long id_user = (long) 1;
+		Contact contactDB = contactRepository.findByUserModelIdAndIdUserContact( id,id_user );
+		if(contactDB == null) {
+			throw new ExceptionBadRequest("Contato não encontrado !");
+		}
+		contactRepository.deleteById(contactDB.getId());
 		
 		return "Contato deletado com sucesso !";
 	}
 
+	private void checkContact(Contact contact) {
+		if (contact == null) {
 
+			throw new ExceptionBadRequest("Contato enviado nulo !");
+		}
+		if (StringUtils.isEmpty(contact.getIdUserContact())) {
 
+			throw new ExceptionBadRequest("O id do contato esta vazio !");
+		}
+		if (StringUtils.isEmpty(contact.getName())) {
+			throw new ExceptionBadRequest("O nome do contato não pode ser vazio!");
+		}
+		if (contact.getUserModel() == null) {
+			throw new ExceptionBadRequest("Usuario não encontrado");
+		}
+	}
 
+	
+	private void validarContato (Contact contact) {
+		UserModel contatcDB = userRepository.findById(contact.getIdUserContact()).get();
+		if(contatcDB == null) {
+			throw new ExceptionBadRequest("Usuario não encontrado");
+		}
+	}
 	
 }

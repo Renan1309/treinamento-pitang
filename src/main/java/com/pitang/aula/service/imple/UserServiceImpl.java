@@ -26,6 +26,11 @@ import com.pitang.aula.model.UserModel;
 import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.UserService;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -33,9 +38,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private TokenServiceJwtImpl tokenServiceJwtImpl;
 
-	@Autowired
-	private HttpServletRequest request;
-
+	
 	@Autowired
 	private UserModelRepository userRepository;
 
@@ -147,7 +150,7 @@ public class UserServiceImpl implements UserService {
 	private void validateUserCreat(UserModel user) {
 
 		if (!StringUtils.isEmpty(user.getEmail()) && userRepository.findByEmail(user.getEmail()) != null) {
-			System.out.println("Email ja cadastrado");
+			throw new ExceptionBadRequest("Email ja cadastrado");
 		}
 
 	}
@@ -190,10 +193,39 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String guardarArquivo(MultipartFile file, UserModel user) {
-
+	public String alterarImagem(MultipartFile file, Long id) {
+		UserModel user = userRepository.findById(id).get();
+		if (user == null) {
+			throw new ExceptionBadRequest("Id inválido não foi possível alterar imagem !");
+		}
+		Path currentRelativePath = Paths.get("");
+		String url = currentRelativePath.toAbsolutePath().toString();
+		System.out.println("URL ======> " + url);
 		String diretorioImage = "/Images/";
-		String UPLOADED_FOLDER = request.getServletContext().getRealPath("/Images/");
+		String UPLOADED_FOLDER = url + diretorioImage;
+		Path path = Paths.get(UPLOADED_FOLDER);
+		path = Paths.get(UPLOADED_FOLDER + user.getId() + "_.png");
+		byte[] bytes;
+		try {
+			bytes = file.getBytes();
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "Imagem alterada com sucesso !";
+	}
+
+	@Override
+	public String guardarArquivo(MultipartFile file, UserModel user) {
+		
+		//crear Path Paths.get(URI.create("file:///Users/joe/FileTest.java"));     ====obs  implementar isso
+		Path currentRelativePath = Paths.get("");
+		String url = currentRelativePath.toAbsolutePath().toString();
+		System.out.println("URL ======> " + url);
+		String diretorioImage = "/Images/";
+		String UPLOADED_FOLDER = url + diretorioImage; // request.getServletContext().getRealPath("/Images/");
 		System.out.println(UPLOADED_FOLDER);
 
 		try {
@@ -233,20 +265,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto  bytesDaImagem(UserDto userdto , String diretoriodaimagem) {
-		String  UPLOADED_FOLDER = request.getServletContext().getRealPath(diretoriodaimagem);
-		Path path = Paths.get(UPLOADED_FOLDER );
+	public UserDto bytesDaImagem(UserDto userdto, String diretoriodaimagem) {
+		Path currentRelativePath = Paths.get("");
+		String UPLOADED_FOLDER = currentRelativePath.toAbsolutePath().toString() + diretoriodaimagem;
+		Path path = Paths.get(UPLOADED_FOLDER);
 		byte[] bytesimage = null;
-		if(diretoriodaimagem != null) {
-		try {
-			bytesimage = Files.readAllBytes(path);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (diretoriodaimagem != null) {
+			try {
+				bytesimage = Files.readAllBytes(path);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		}
-		
-		userdto.setImagebyte(bytesimage);
+
+		userdto.setImagebyte(bytesimage); //
 		return userdto;
 	}
 

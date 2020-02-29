@@ -11,24 +11,26 @@ import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.model.UserModel;
 
 public interface UserService {
-	
-	public List<UserModel> listUser() ;
-	
+
+	public List<UserModel> listUser();
+
 	public UserModel findByUserByUserName(String usu_name);
-	
+
 	public UserModel findByUserById(Long id_usu);
-	
-	public UserModel creatUser(MultipartFile file , UserModel user);
-	
+
+	public UserModel creatUser(MultipartFile file, UserModel user);
+
 	public UserModel updateUser(Long id, UserModel userChange);
 
 	void deleteUser(Long id);
-	
+
 	public String authentication(UsuarioForm usuarioForm);
-	
-	public String guardarArquivo(MultipartFile file , UserModel user);
-	
-	public  UserDto  bytesDaImagem(UserDto userdto , String diretoriodaimagem);
-	
-	//public Boolean validarIdentidadeUsuario();
+
+	public String guardarArquivo(MultipartFile file, UserModel user);
+
+	public UserDto bytesDaImagem(UserDto userdto, String diretoriodaimagem);
+
+	public String alterarImagem(MultipartFile file, Long id);
+
+	// public Boolean validarIdentidadeUsuario();
 }

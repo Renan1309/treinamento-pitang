@@ -36,7 +36,7 @@ public class ContatoController {
 	
 	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 	@ResponseBody
-      public ResponseEntity <List<ContactDto>>  listUsuarios() {
+      public ResponseEntity <List<ContactDto>>  listContatosAll() {
            List<Contact> contacts = contactService.listcontact() ;
 		
 		if(contacts.size() == 0) {

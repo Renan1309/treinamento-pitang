@@ -10,4 +10,7 @@ import com.pitang.aula.model.UserModel;
 public interface ContactModelRepository extends JpaRepository<Contact, Long > {
 	
      List<Contact>  findByUserModelId(Long id);
+     
+     Contact findByUserModelIdAndIdUserContact(Long idUserContact , Long idUser);
+     
 }
