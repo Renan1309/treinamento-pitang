@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "contact")
@@ -35,7 +37,7 @@ public class Contact {
 	@Column(name = "id_contact_user")
 	private Long idUserContact ;
 	
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "user_id")
 	private UserModel userModel ;

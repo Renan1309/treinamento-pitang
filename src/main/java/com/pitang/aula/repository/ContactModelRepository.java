@@ -13,4 +13,8 @@ public interface ContactModelRepository extends JpaRepository<Contact, Long > {
      
      Contact findByUserModelIdAndIdUserContact(Long idUserContact , Long idUser);
      
+     
+     
+     
+     
 }

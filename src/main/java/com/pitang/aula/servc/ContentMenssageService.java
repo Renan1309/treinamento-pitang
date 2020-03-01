@@ -2,6 +2,7 @@ package com.pitang.aula.servc;
 
 import java.util.List;
 
+import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.model.ContentMenssage;
 
 public interface ContentMenssageService {
@@ -19,6 +20,8 @@ public interface ContentMenssageService {
 	public ContentMenssage deletarMensagemIndividual(Long id ,ContentMenssage contentMenssage);
 	
 	public ContentMenssage deletarMensagem(Long id , ContentMenssage contentMenssage);
+	
+	public List<TalkDto> listarConversas(Long id_user);
 	
 	
 }

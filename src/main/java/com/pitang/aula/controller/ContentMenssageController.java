@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MessageDto;
+import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
@@ -106,5 +107,18 @@ public class ContentMenssageController {
 		ContentMenssage msg = contentMenssageService.deletarMensagem(id , contentMenssage);		
 		return new ResponseEntity<>( msg ,HttpStatus.OK);
 		
+	}
+	
+	@RequestMapping(value = "/conversas/{id_user}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<List<TalkDto>> listConversas(@PathVariable("id_user") Long id_user) {
+		List<TalkDto> msg = contentMenssageService.listarConversas(id_user);
+
+		if (msg.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(msg, HttpStatus.OK);
+
 	}
 }

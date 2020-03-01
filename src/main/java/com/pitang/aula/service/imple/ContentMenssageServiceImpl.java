@@ -2,6 +2,7 @@ package com.pitang.aula.service.imple;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,13 @@ import javax.swing.text.AbstractDocument.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pitang.aula.dto.ContentMenssageDto;
+import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
+import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.repository.ContentMenssageRepository;
+import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.ContentMenssageService;
 
 @Service
@@ -21,6 +26,10 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 
 	@Autowired
 	private ContentMenssageRepository contentMenssageRepository;
+	
+	
+	@Autowired
+	private ContactServiceImpl contactServiceImpl;
 
 	@Override
 	public List<ContentMenssage> listAllMenssage() {
@@ -72,6 +81,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage) {
 
 		// contentMenssageRepository.save(contentMenssage);
+		
 
 		return contentMenssageRepository.save(contentMenssage);
 	}
@@ -111,6 +121,37 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		contentMenssageRepository.save(messageOriginal);
 
 		return contentMenssageRepository.save(messageOriginal);
+	}
+
+	@Override
+	public List<TalkDto> listarConversas(Long id_user) {
+		
+		List<Contact> userContactList = contactServiceImpl.userContacts(id_user);
+		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
+		TalkDto talk ;
+		Boolean statusSend = true ;
+		
+		for (Contact contact : userContactList) {
+			//ContentMenssage contentMenssage = contentMenssageRepository.findUltimaMensagem(id_user, contact.getIdUserContact() );
+			List<ContentMenssage> listmensagensok =  listarMensagensAtivas(id_user,contact.getIdUserContact(), statusSend);
+			
+			if(listmensagensok != null) {
+				ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
+				String name = contact.getName();
+				talk = new TalkDto();
+				talk.setContact(contact);
+				talk.setContentMenssage(contentMenssage);
+				talklist.add(talk);
+				
+				
+			}
+		}
+		
+		//listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend)  Comparator.comparing(ContentMenssage::getDatamsg)
+		// TODO Auto-generated method stub 
+		
+		Collections.sort(talklist);
+		return talklist;
 	}
 
 }

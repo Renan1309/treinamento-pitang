@@ -54,7 +54,7 @@ public class ContactServiceImpl implements ContactService {
 
 
 
-//Metodo para listar os contatos do usuario
+    //Metodo para listar os contatos do usuario
 	@Override
 	public List<Contact> userContacts(Long id) {
 		UserModel userValido = userRepository.findById(id).get(); //verificando se o id informado contem um usuario valido
@@ -106,7 +106,7 @@ public class ContactServiceImpl implements ContactService {
 	private void validarContato (Contact contact) {
 		UserModel contatcDB = userRepository.findById(contact.getIdUserContact()).get();
 		if(contatcDB == null) {
-			throw new ExceptionBadRequest("Usuario não encontrado");
+			throw new ExceptionBadRequest("Id de adicao do contato invalido");
 		}
 	}
 	
