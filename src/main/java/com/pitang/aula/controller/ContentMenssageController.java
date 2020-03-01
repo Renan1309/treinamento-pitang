@@ -55,8 +55,6 @@ public class ContentMenssageController {
 			@PathVariable("id_contact") Long id_contact, @PathVariable("statusmsg") Boolean statusmsg) {
 
 		List<ContentMenssage> msg = contentMenssageService.listarMensagensAtivas(id_user, id_contact, statusmsg);
-		Date data = new Date();
-		System.out.println("Data Agora: " + data);
 
 		if (msg.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,6 +63,22 @@ public class ContentMenssageController {
 		return new ResponseEntity<>(msg, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/mensagens/user/{id_user}/contact/{id_contact}/status/{statusmsg}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public ResponseEntity<List<TalkDto>> deletarConversaEmensage(@PathVariable("id_user") Long id_user,
+			@PathVariable("id_contact") Long id_contact, @PathVariable("statusmsg") Boolean statusmsg) {
+
+		List<TalkDto> msg = contentMenssageService.excluiConversa(id_user, id_contact, statusmsg);
+
+		if (msg.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(msg, HttpStatus.OK);
+
+	}
+	
 
 	@RequestMapping(value = "/mensage/new", method = RequestMethod.POST)
 	@ResponseBody

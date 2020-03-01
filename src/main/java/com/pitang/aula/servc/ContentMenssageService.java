@@ -23,5 +23,7 @@ public interface ContentMenssageService {
 	
 	public List<TalkDto> listarConversas(Long id_user);
 	
+	public List<TalkDto> excluiConversa(Long id_user , Long id_contact, Boolean statusSend);
+	
 	
 }

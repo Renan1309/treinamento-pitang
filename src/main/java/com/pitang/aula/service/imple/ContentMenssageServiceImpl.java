@@ -95,9 +95,9 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 
 		if (id == contentMenssage.getIdusermsg() && messageOriginal.getIdusermsg() == contentMenssage.getIdusermsg()) {
-			messageOriginal.setStatusSend(contentMenssage.getStatusSend());
+			messageOriginal.setStatusSend(false);
 		} else if (id != contentMenssage.getIdusermsg()) {
-			messageOriginal.setStatusRecipient(contentMenssage.getStatusRecipient());
+			messageOriginal.setStatusRecipient(false);
 			
 		}
 		contentMenssageRepository.save(messageOriginal);
@@ -135,7 +135,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 			//ContentMenssage contentMenssage = contentMenssageRepository.findUltimaMensagem(id_user, contact.getIdUserContact() );
 			List<ContentMenssage> listmensagensok =  listarMensagensAtivas(id_user,contact.getIdUserContact(), statusSend);
 			
-			if(listmensagensok != null) {
+			if(!listmensagensok.isEmpty()) {
 				ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
 				String name = contact.getName();
 				talk = new TalkDto();
@@ -151,6 +151,20 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		// TODO Auto-generated method stub 
 		
 		Collections.sort(talklist);
+		return talklist;
+	}
+
+	@Override
+	public List<TalkDto> excluiConversa(Long id_user, Long id_contact, Boolean statusSend) {
+		// TODO Auto-generated method stub
+		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
+		List<ContentMenssage> listmensagensok =  listarMensagensAtivas(id_user,id_contact, statusSend);
+		
+		for (ContentMenssage contentMenssage : listmensagensok) {
+			deletarMensagemIndividual(id_user , contentMenssage);
+		}
+		
+		talklist = listarConversas(id_user);
 		return talklist;
 	}
 
