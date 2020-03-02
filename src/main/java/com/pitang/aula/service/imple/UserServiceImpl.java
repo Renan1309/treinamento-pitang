@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel findByUserByUserName(String usu_email) {
 		if (usu_email == null || usu_email.isEmpty()) {
-			System.out.println("email veio null");
+			
 			throw new ExceptionBadRequest("Email enviado nulo !");
 		}
 		UserModel user = userRepository.findByEmail(usu_email);
@@ -194,17 +194,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String alterarImagem(MultipartFile file, Long id) {
-		UserModel user = userRepository.findById(id).get();
-		if (user == null) {
+		Optional<UserModel> user = userRepository.findById(id);
+		if (!user.isPresent()) {
 			throw new ExceptionBadRequest("Id inválido não foi possível alterar imagem !");
 		}
+		
 		Path currentRelativePath = Paths.get("");
 		String url = currentRelativePath.toAbsolutePath().toString();
 		System.out.println("URL ======> " + url);
 		String diretorioImage = "/Images/";
 		String UPLOADED_FOLDER = url + diretorioImage;
 		Path path = Paths.get(UPLOADED_FOLDER);
-		path = Paths.get(UPLOADED_FOLDER + user.getId() + "_.png");
+		path = Paths.get(UPLOADED_FOLDER + user.get().getId() + "_.png");
 		byte[] bytes;
 		try {
 			bytes = file.getBytes();

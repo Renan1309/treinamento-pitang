@@ -23,6 +23,10 @@ public class ContactServiceImpl implements ContactService {
 	
 	@Autowired
 	private UserModelRepository userRepository;
+	
+	@Autowired
+	private ContentMenssageServiceImpl contentMenssageServiceImpl ;
+	
 
 	
 	
@@ -80,6 +84,10 @@ public class ContactServiceImpl implements ContactService {
 		if(contactDB == null) {
 			throw new ExceptionBadRequest("Contato não encontrado !");
 		}
+		
+		boolean statusMsg = true ;
+		contentMenssageServiceImpl.excluiConversa(id, idusercontact,statusMsg);  ///Apos deletar o contato eu chamo a funcao para excluir as mensagens e as conversas individuais
+		
 		contactRepository.deleteById(contactDB.getId());
 		
 		return "Contato deletado com sucesso !";
@@ -104,10 +112,18 @@ public class ContactServiceImpl implements ContactService {
 
 	
 	private void validarContato (Contact contact) {
-		UserModel contatcDB = userRepository.findById(contact.getIdUserContact()).get();
-		if(contatcDB == null) {
-			throw new ExceptionBadRequest("Id de adicao do contato invalido");
+		Optional<UserModel> usercontatcDB = userRepository.findById(contact.getIdUserContact());
+		Contact contactDB = contactRepository.findByUserModelIdAndIdUserContact(contact.getUserModel().getId(), contact.getIdUserContact());
+		
+		if(!usercontatcDB.isPresent()) {
+			throw new ExceptionBadRequest("Id de adicao do contato invalido ou Id de contato é inexistente");
 		}
+		if(contactDB != null) {
+			throw new ExceptionBadRequest("Contato ja exite !");
+		}
+		
 	}
+	
+	
 	
 }
