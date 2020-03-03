@@ -62,6 +62,26 @@ public class UserModel {
 			   cascade = CascadeType.ALL,
 			   mappedBy = "userModel")
 	private List<Story> story;
+	
+	
+	@OneToMany
+    private List<ContentMenssage> contentMenssages;
+	
+	
+	
+	
+
+	public List<ContentMenssage> getContentMenssages() {
+		return contentMenssages;
+	}
+
+
+
+	public void setContentMenssages(List<ContentMenssage> contentMenssages) {
+		this.contentMenssages = contentMenssages;
+	}
+
+
 
 	public String getPathImage() {
 		return pathImage;

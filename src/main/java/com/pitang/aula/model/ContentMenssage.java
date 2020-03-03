@@ -6,9 +6,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,14 +35,6 @@ public class ContentMenssage {
 	private String contentmsg ;
 	
 	@NotNull
-	@Column(name = "id_user_msg")
-	private Long idusermsg ;
-	
-	@NotNull
-	@Column(name = "id_user_contact")
-	private Long idusercontact ;
-	
-	@NotNull
 	@Column(name = "status_msg" )
 	private Boolean statusmsg  = true;
 	
@@ -56,13 +51,31 @@ public class ContentMenssage {
 	@Column(name = "datamsg"  , columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date datamsg; 
 	
+	@OneToOne(fetch = FetchType.EAGER , optional = true)
+    @JoinColumn(name = "id_user_msg" , nullable = false)
+    private UserModel idusermsg;
 	
-	//SELECT contentmsg FROM content_menssage where id_us
+	@OneToOne(fetch = FetchType.EAGER , optional = true)
+    @JoinColumn(name = "id_user_contact" , nullable = false)
+    private UserModel idusercontact;
 	
-	// @PrePersist
-	//  protected void onCreate() {
-	//    datamsg = new Date();
-	//  }
+	
+
+	public UserModel getIdusermsg() {
+		return idusermsg;
+	}
+
+	public void setIdusermsg(UserModel idusermsg) {
+		this.idusermsg = idusermsg;
+	}
+
+	public UserModel getIdusercontact() {
+		return idusercontact;
+	}
+
+	public void setIdusercontact(UserModel idusercontact) {
+		this.idusercontact = idusercontact;
+	}
 
 	public Boolean getStatusmsg() {
 		return statusmsg;
@@ -86,22 +99,6 @@ public class ContentMenssage {
 
 	public void setStatusmsg(Boolean statusmsg) {
 		this.statusmsg = statusmsg;
-	}
-
-	public Long getIdusermsg() {
-		return idusermsg;
-	}
-
-	public void setIdusermsg(Long idusermsg) {
-		this.idusermsg = idusermsg;
-	}
-
-	public Long getIdusercontact() {
-		return idusercontact;
-	}
-
-	public void setIdusercontact(Long idusercontact) {
-		this.idusercontact = idusercontact;
 	}
 
 	public Long getId() {

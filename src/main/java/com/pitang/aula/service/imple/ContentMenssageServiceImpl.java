@@ -98,9 +98,9 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 			throw new ExceptionBadRequest("Mensagem não existe !");
 		}
 		messageOriginal.get();
-		if (id == contentMenssage.getIdusermsg() && messageOriginal.get().getIdusermsg() == contentMenssage.getIdusermsg()) {
+		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
-		} else if (id != contentMenssage.getIdusermsg()) {
+		} else if (id != contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusRecipient(false);
 			
 		}
@@ -116,7 +116,8 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		if (!messageOriginal.isPresent()) {
 			throw new ExceptionBadRequest("Menssagem não existe !");
 		}
-		if (id == contentMenssage.getIdusermsg() && messageOriginal.get().getIdusermsg() == contentMenssage.getIdusermsg()) {
+		
+		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
 			messageOriginal.get().setStatusRecipient(false);
 		} else {
@@ -152,8 +153,8 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 		
 		//teste para mostra json das mensagens que não possuo contato.
-		List<TalkDto> contatoestranho = listarMensagensAtivasGeral(id_user);
-		talklist.addAll(contatoestranho);
+		//List<TalkDto> contatoestranho = listarMensagensAtivasGeral(id_user);
+		//talklist.addAll(contatoestranho);
 		//teste para mostra json das mensagens que não possuo contato.
 	//ordenar talklist
 		return talklist;
@@ -185,7 +186,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		Collection<Long> listadeids  = new HashSet<Long>();//hashset para remover os repetidos
 	
 		for (ContentMenssage contentMenssage : msg_n_cadastrados) {
-			Long number = contentMenssage.getIdusermsg();
+			Long number = contentMenssage.getIdusermsg().getId();
 			//listadeids.add(number);
 			listadeids.add(number);
 		}
@@ -225,7 +226,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 	
 
-		return talklist;
+		return null;
 	}
 
 }

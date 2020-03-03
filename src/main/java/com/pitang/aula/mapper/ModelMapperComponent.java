@@ -5,21 +5,26 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.model.UserModel;
+import com.pitang.aula.servc.UserService;
 
 
 
 @Component
 public class ModelMapperComponent {
 	//classes de modelmapper
+	
+	
 	
 	public static final ModelMapper modelMapper= new ModelMapper();
 	
@@ -81,8 +86,8 @@ public class ModelMapperComponent {
                     @Override
                     protected void configure() {
                     	map().setContentmsg(source.getContentmsg());
-                    	map().setIdusermsg(source.getIdusermsg());
-                    	map().setIdusercontact(source.getIdusercontact());
+                    	//map().setIdusermsg(userowner);
+                    	//map().setIdusercontact(usertarget);
                     	
                     	
                     }
@@ -92,15 +97,32 @@ public class ModelMapperComponent {
                 new PropertyMap<MessageDto , ContentMenssage>() {
                     @Override
                     protected void configure() {
+                   
                     	map().setId(source.getId());
-                    	map().setIdusermsg(source.getIdusermsg());
-                    	map().setIdusercontact(source.getIdusercontact());
+                    	//map().setIdusermsg(userowner);
+                    	//map().setIdusercontact(usertarget);
+                    	map().setStatusSend(source.getStatusSend());
+                    	map().setStatusRecipient(source.getStatusRecipient());
+                    	
+                    }
+                });
+       
+        /*
+        modelMapper.addMappings(
+                new PropertyMap<MessageDto , ContentMenssage>() {
+                    @Override
+                    protected void configure() {
+                    	map().setId(source.getId());
+                    	//map().setIdusermsg(source.getIdusermsg());
+                    	//map().setIdusercontact(source.getIdusercontact());
                     	map().setStatusSend(source.getStatusSend());
                     	map().setStatusRecipient(source.getStatusRecipient());
                     	
                     }
                 });
         
+        
+        */
      
         
 	}

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,21 +19,26 @@ import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.servc.ContactService;
 import com.pitang.aula.servc.ContentMenssageService;
+import com.pitang.aula.servc.UserService;
 
 @RestController
 public class ContentMenssageController {
 
 	private ContentMenssageService contentMenssageService;
 
-	public ContentMenssageController(ContentMenssageService contentMenssageService) {
+	private UserService userService ;
+
+	public ContentMenssageController(ContentMenssageService contentMenssageService , UserService userService ) {
 		super();
 		this.contentMenssageService = contentMenssageService;
+		this.userService = userService ;
 
 	}
 
@@ -89,6 +95,18 @@ public class ContentMenssageController {
 		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(contentMenssagedto,
 				new TypeToken<ContentMenssage>() {
 				}.getType());
+		 UserModel userowner =	userService.findByUserById(contentMenssagedto.getIdusermsg());
+         if(userowner == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         UserModel usertarget =	userService.findByUserById(contentMenssagedto.getIdusercontact());
+         if(usertarget == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         
+         contentMenssage.setIdusermsg(userowner);
+         contentMenssage.setIdusercontact(usertarget);
+		
 		ContentMenssage msg = contentMenssageService.enviarMenssage(contentMenssage);
 
 		return new ResponseEntity<>(msg, HttpStatus.OK);
@@ -104,6 +122,19 @@ public class ContentMenssageController {
         }
 		
 		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
+		
+		 UserModel userowner =	userService.findByUserById(messageDto.getIdusermsg());
+         if(userowner == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         UserModel usertarget =	userService.findByUserById(messageDto.getIdusercontact());
+         if(usertarget == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         
+         contentMenssage.setIdusermsg(userowner);
+         contentMenssage.setIdusercontact(usertarget);
+         
 		ContentMenssage msg = contentMenssageService.deletarMensagemIndividual(id , contentMenssage);		
 		return new ResponseEntity<>( msg ,HttpStatus.OK);
 		
@@ -118,6 +149,19 @@ public class ContentMenssageController {
         }
 		
 		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
+		
+		 UserModel userowner =	userService.findByUserById(messageDto.getIdusermsg());
+         if(userowner == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         UserModel usertarget =	userService.findByUserById(messageDto.getIdusercontact());
+         if(usertarget == null) {
+         	throw new ExceptionBadRequest("Id de usuário inválido !");
+         }
+         
+         contentMenssage.setIdusermsg(userowner);
+         contentMenssage.setIdusercontact(usertarget);
+		
 		ContentMenssage msg = contentMenssageService.deletarMensagem(id , contentMenssage);		
 		return new ResponseEntity<>( msg ,HttpStatus.OK);
 		
