@@ -60,7 +60,7 @@ public class UserModel {
 	
 	@OneToMany(fetch = FetchType.LAZY ,
 			   cascade = CascadeType.ALL,
-			   mappedBy = "userModel")
+			   mappedBy = "storyOwner")
 	private List<Story> story;
 	
 	

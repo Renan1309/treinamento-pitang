@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "story")
 public class Story {
@@ -25,15 +27,18 @@ public class Story {
 	@Column(name = "story_message")
 	private String message ;
 	
-	@NotNull
-	@Size(max = 70)
-	@Column(name = "story_Iduser")
-	private int id_user;
-	
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY )
 	@JoinColumn(name = "user_id")
-	private UserModel userModel ;
+	private UserModel storyOwner;
+
+	public UserModel getStoryOwner() {
+		return storyOwner;
+	}
+
+	public void setStoryOwner(UserModel storyOwner) {
+		this.storyOwner = storyOwner;
+	}
 
 	public Long getId() {
 		return id;
@@ -51,15 +56,5 @@ public class Story {
 		this.message = message;
 	}
 
-	public int getId_user() {
-		return id_user;
-	}
-
-	public void setId_user(int id_user) {
-		this.id_user = id_user;
-	}
-
-
-	
 	
 }

@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MessageDto;
+import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
+import com.pitang.aula.model.Story;
 import com.pitang.aula.model.UserModel;
 import com.pitang.aula.servc.UserService;
 
@@ -104,6 +106,16 @@ public class ModelMapperComponent {
                     	map().setStatusSend(source.getStatusSend());
                     	map().setStatusRecipient(source.getStatusRecipient());
                     	
+                    }
+                });
+        
+        modelMapper.addMappings(
+                new PropertyMap<StoryDto , Story>() {
+                    @Override
+                    protected void configure() {
+                    	
+                    	map().setMessage(source.getMessage());
+                   
                     }
                 });
        
