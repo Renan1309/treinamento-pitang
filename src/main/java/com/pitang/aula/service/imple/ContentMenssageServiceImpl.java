@@ -153,8 +153,8 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 		
 		//teste para mostra json das mensagens que não possuo contato.
-		//List<TalkDto> contatoestranho = listarMensagensAtivasGeral(id_user);
-		//talklist.addAll(contatoestranho);
+		List<TalkDto> contatoestranho = listarMensagensAtivasGeral(id_user);
+		talklist.addAll(contatoestranho);
 		//teste para mostra json das mensagens que não possuo contato.
 	//ordenar talklist
 		return talklist;
@@ -185,7 +185,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		List<ContentMenssage> msg_n_cadastrados = contentMenssageRepository.findconversasEnviadasPorContatosNãoCadastrados(id_user);
 		Collection<Long> listadeids  = new HashSet<Long>();//hashset para remover os repetidos
 	
-		for (ContentMenssage contentMenssage : msg_n_cadastrados) {
+		for (ContentMenssage contentMenssage : msg_n_cadastrados) {  //pegando o id de toda as mensagens
 			Long number = contentMenssage.getIdusermsg().getId();
 			//listadeids.add(number);
 			listadeids.add(number);
@@ -194,16 +194,16 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		
 		Collection<Long> listadeidsContatos  = new HashSet<Long>();
 		List<Contact> userContactList = contactServiceImpl.userContacts(id_user);
-		for (Contact contact : userContactList) {
+		for (Contact contact : userContactList) {  //listando os meus contatos para pegar os ids
 			listadeidsContatos.add(contact.getIdUserContact());
 		}
-		listadeids.removeAll(listadeidsContatos);
+		listadeids.removeAll(listadeidsContatos); //removendo os contatos que ja tenho para ficar apenas os ids q eu n tenho
 		
 		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
 		TalkDto talk ;
 		Contact contact ;
 		boolean statusmsg = true;
-        for (Long long1 : listadeids) {
+        for (Long long1 : listadeids) {  //interando sobre os ids de contatos que eu n possuo 
         	talk = new TalkDto();
         	contact = new Contact();
 			System.out.println("id que n possuo como contato :" + long1);
@@ -226,7 +226,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 	
 
-		return null;
+		return talklist;
 	}
 
 }
