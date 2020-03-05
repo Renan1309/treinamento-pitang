@@ -1,27 +1,20 @@
 package com.pitang.aula.service.imple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.swing.text.AbstractDocument.Content;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.repository.ContentMenssageRepository;
-import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.ContentMenssageService;
 
 @Service
@@ -29,8 +22,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 
 	@Autowired
 	private ContentMenssageRepository contentMenssageRepository;
-	
-	
+
 	@Autowired
 	private ContactServiceImpl contactServiceImpl;
 
@@ -57,7 +49,6 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		return concatenaLista;
 		// return null ;
 	}
-	
 
 	@Override
 	public List<ContentMenssage> listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend) {
@@ -85,7 +76,6 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage) {
 
 		// contentMenssageRepository.save(contentMenssage);
-		
 
 		return contentMenssageRepository.save(contentMenssage);
 	}
@@ -98,11 +88,12 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 			throw new ExceptionBadRequest("Mensagem não existe !");
 		}
 		messageOriginal.get();
-		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
+		if (id == contentMenssage.getIdusermsg().getId()
+				&& messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
 		} else if (id != contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusRecipient(false);
-			
+
 		}
 		contentMenssageRepository.save(messageOriginal.get());
 
@@ -116,8 +107,9 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		if (!messageOriginal.isPresent()) {
 			throw new ExceptionBadRequest("Menssagem não existe !");
 		}
-		
-		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
+
+		if (id == contentMenssage.getIdusermsg().getId()
+				&& messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
 			messageOriginal.get().setStatusRecipient(false);
 		} else {
@@ -130,101 +122,105 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 
 	@Override
 	public List<TalkDto> listarConversas(Long id_user) {
-		
+
 		List<Contact> userContactList = contactServiceImpl.userContacts(id_user);
-		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
-		TalkDto talk ;
-		Boolean statusSend = true ;
-		
+		List<TalkDto> talklist = new ArrayList<TalkDto>();
+		TalkDto talk;
+		Boolean statusSend = true;
+
 		for (Contact contact : userContactList) {
-			//ContentMenssage contentMenssage = contentMenssageRepository.findUltimaMensagem(id_user, contact.getIdUserContact() );
-			List<ContentMenssage> listmensagensok =  listarMensagensAtivas(id_user,contact.getIdUserContact(), statusSend);
-			
-			if(!listmensagensok.isEmpty()) {
+			// ContentMenssage contentMenssage =
+			// contentMenssageRepository.findUltimaMensagem(id_user,
+			// contact.getIdUserContact() );
+			List<ContentMenssage> listmensagensok = listarMensagensAtivas(id_user, contact.getIdUserContact(),
+					statusSend);
+
+			if (!listmensagensok.isEmpty()) {
 				ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
 				String name = contact.getName();
 				talk = new TalkDto();
 				talk.setContact(contact);
 				talk.setContentMenssage(contentMenssage);
 				talklist.add(talk);
-				
-				
+
 			}
 		}
+
+		// teste para mostra json das mensagens que não possuo contato .
+		List<TalkDto> conversasDeContatosNcadastrados = listarMensagensAtivasGeral(id_user);
+		if (!conversasDeContatosNcadastrados.isEmpty()) {
+			talklist.addAll(conversasDeContatosNcadastrados);
+		}
 		
-		//teste para mostra json das mensagens que não possuo contato.
-		List<TalkDto> contatoestranho = listarMensagensAtivasGeral(id_user);
-		talklist.addAll(contatoestranho);
-		//teste para mostra json das mensagens que não possuo contato.
-	//ordenar talklist
+		// teste para mostra json das mensagens que não possuo contato.
+		
+		// ordenar talklist
 		return talklist;
 	}
 
 	@Override
 	public List<TalkDto> excluiConversa(Long id_user, Long id_contact, Boolean statusSend) {
 		// TODO Auto-generated method stub
-		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
-		List<ContentMenssage> listmensagensok =  listarMensagensAtivas(id_user,id_contact, statusSend);
-		
+		List<TalkDto> talklist = new ArrayList<TalkDto>();
+		List<ContentMenssage> listmensagensok = listarMensagensAtivas(id_user, id_contact, statusSend);
+
 		for (ContentMenssage contentMenssage : listmensagensok) {
-			deletarMensagemIndividual(id_user , contentMenssage);
+			deletarMensagemIndividual(id_user, contentMenssage);
 		}
-		
+
 		talklist = listarConversas(id_user);
 		return talklist;
 	}
-	
+
 	private void listarConversasAll(Long id_user) {
-		
+
 	}
-	
 
 	public List<TalkDto> listarMensagensAtivasGeral(Long id_user) {
-		
-		
-		List<ContentMenssage> msg_n_cadastrados = contentMenssageRepository.findconversasEnviadasPorContatosNãoCadastrados(id_user);
-		Collection<Long> listadeids  = new HashSet<Long>();//hashset para remover os repetidos
-	
-		for (ContentMenssage contentMenssage : msg_n_cadastrados) {  //pegando o id de toda as mensagens
+
+		List<ContentMenssage> msg_n_cadastrados = contentMenssageRepository
+				.findconversasEnviadasPorContatosNãoCadastrados(id_user);
+		Collection<Long> listadeids = new HashSet<Long>();// hashset para remover os repetidos
+
+		for (ContentMenssage contentMenssage : msg_n_cadastrados) { // pegando o id de toda as mensagens
 			Long number = contentMenssage.getIdusermsg().getId();
-			//listadeids.add(number);
+			// listadeids.add(number);
 			listadeids.add(number);
 		}
-		
-		
-		Collection<Long> listadeidsContatos  = new HashSet<Long>();
+
+		Collection<Long> listadeidsContatos = new HashSet<Long>();
 		List<Contact> userContactList = contactServiceImpl.userContacts(id_user);
-		for (Contact contact : userContactList) {  //listando os meus contatos para pegar os ids
+		for (Contact contact : userContactList) { // listando os meus contatos para pegar os ids
 			listadeidsContatos.add(contact.getIdUserContact());
 		}
-		listadeids.removeAll(listadeidsContatos); //removendo os contatos que ja tenho para ficar apenas os ids q eu n tenho
-		
-		List<TalkDto> talklist = new ArrayList<TalkDto>() ;
-		TalkDto talk ;
-		Contact contact ;
+		listadeids.removeAll(listadeidsContatos); // removendo os contatos que ja tenho para ficar apenas os ids q eu n
+													// tenho
+
+		List<TalkDto> talklist = new ArrayList<TalkDto>();
+		TalkDto talk;
+		Contact contact;
 		boolean statusmsg = true;
-        for (Long long1 : listadeids) {  //interando sobre os ids de contatos que eu n possuo 
-        	talk = new TalkDto();
-        	contact = new Contact();
+		for (Long long1 : listadeids) { // interando sobre os ids de contatos que eu n possuo
+			talk = new TalkDto();
+			contact = new Contact();
 			System.out.println("id que n possuo como contato :" + long1);
 			List<ContentMenssage> listaMensagensOk = new ArrayList<>();
-			List<ContentMenssage> listmensagensok =  contentMenssageRepository.findconversasEnviadasPeloContact(id_user ,long1,statusmsg);
+			List<ContentMenssage> listmensagensok = contentMenssageRepository.findconversasEnviadasPeloContact(id_user,
+					long1, statusmsg);
 			listaMensagensOk.sort(Comparator.comparing(ContentMenssage::getDatamsg));
 			ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
 			contact.setIdUserContact(long1);
-			contact.setName("Contato_"+long1);
-			
+			contact.setName("Contato_" + long1);
+
 			talk.setContentMenssage(contentMenssage);
 			talk.setContact(contact);
 			talklist.add(talk);
-			
-		}
-	
 
-        for (TalkDto talkDto : talklist) {
+		}
+
+		for (TalkDto talkDto : talklist) {
 			System.out.println(talkDto);
 		}
-	
 
 		return talklist;
 	}

@@ -1,13 +1,20 @@
 package com.pitang.aula.service.imple;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pitang.aula.dto.TalkDto;
+import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.Story;
 import com.pitang.aula.model.UserModel;
@@ -38,7 +45,13 @@ public class StoryServiceImpl implements StoryService {
 		
 		
 		
-		return storyRepository.save(story);
+		 story = storyRepository.save(story);
+		 String caminhoStory = guardarStory(file, story); // metodo para guarda o arquivo
+		 
+		story.setPathStory(caminhoStory);
+		 
+		 
+		 return storyRepository.save(story);
 	}
 
 
@@ -58,5 +71,58 @@ public class StoryServiceImpl implements StoryService {
 		
 		return storyMyContacts;
 	}
+	
+	@Override
+	public String guardarStory(MultipartFile file, Story story) {
+		
+		
+		Path currentRelativePath = Paths.get("");
+		String url = currentRelativePath.toAbsolutePath().toString();
+		System.out.println("URL ======> " + url);
+		String diretorioStory = "/Story/";
+		String UPLOADED_FOLDER = url + diretorioStory; // request.getServletContext().getRealPath("/Images/");
+		System.out.println(UPLOADED_FOLDER);
+		Random random = new Random();
+		long id_story = random.nextLong();
+
+		try {
+			byte[] bytes;
+			bytes = file.getBytes();
+			Path path = Paths.get(UPLOADED_FOLDER);
+			File dir = new File(UPLOADED_FOLDER);
+
+			if (!Files.exists(path)) {
+				System.out.println("Arquivo ========> criou 1 : " + dir);
+
+				dir.mkdir();
+				path = Paths.get(UPLOADED_FOLDER + story.getId()+"_"+id_story+ "_.png");
+				Files.write(path, bytes);
+				System.out.println("Arquivo ========> path 1: " + path);
+				System.out.println("caminho criado e imagem 1 = " + path);
+
+			} else {
+				System.out.println("diretorio criado");
+				path = Paths.get(UPLOADED_FOLDER + story.getId()+"_"+id_story+ "_.png");
+				Files.write(path, bytes);
+				System.out.println("Arquivo ========> path 2: " + path);
+			
+				String page1 = path.toString().substring(73);
+				System.out.println("path db : = " + page1);
+
+			}
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String caminhostorydb = diretorioStory + story.getId()+"_"+id_story+ "_.png";
+		return caminhostorydb;
+
+	}
+	
+	
+
+
 
 }

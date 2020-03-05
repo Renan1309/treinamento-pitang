@@ -1,5 +1,7 @@
 package com.pitang.aula.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,8 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,17 +26,41 @@ public class Story {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id ;
-	
+	private Long id;
+
+	@Column(name = "story_image")
+	private String pathStory;
+
 	@NotNull
 	@Size(max = 70)
 	@Column(name = "story_message")
-	private String message ;
-	
+	private String message;
+
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "datastory", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Date datastory;
+
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY )
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private UserModel storyOwner;
+
+	public String getPathStory() {
+		return pathStory;
+	}
+
+	public void setPathStory(String pathStory) {
+		this.pathStory = pathStory;
+	}
+
+	public Date getDatastory() {
+		return datastory;
+	}
+
+	public void setDatastory(Date datastory) {
+		this.datastory = datastory;
+	}
 
 	public UserModel getStoryOwner() {
 		return storyOwner;
@@ -56,5 +86,4 @@ public class Story {
 		this.message = message;
 	}
 
-	
 }

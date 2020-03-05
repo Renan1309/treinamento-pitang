@@ -14,6 +14,8 @@ public interface StoryService {
 	public Story creatStory (MultipartFile file, Story story);
 	
 	public List<Story> listStoryMyContacts(UserModel userModel);
+
+	String guardarStory(MultipartFile file, Story story);
 	
 }
 
