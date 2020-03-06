@@ -4,6 +4,14 @@ public class StoryDto {
 
 	private String message ;
 	private Long storyOwner;
+	private byte[] imagebyte ;
+	
+	public byte[] getImagebyte() {
+		return imagebyte;
+	}
+	public void setImagebyte(byte[] imagebyte) {
+		this.imagebyte = imagebyte;
+	}
 	public String getMessage() {
 		return message;
 	}

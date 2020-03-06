@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.model.Contact;
@@ -121,7 +122,23 @@ public class StoryServiceImpl implements StoryService {
 
 	}
 	
-	
+	public byte[]  bytesDaImagemDo(Story story, String diretorioStory) {
+		Path currentRelativePath = Paths.get("");
+		String UPLOADED_FOLDER = currentRelativePath.toAbsolutePath().toString() + diretorioStory;
+		Path path = Paths.get(UPLOADED_FOLDER);
+		byte[] bytesimage = null;
+		if (diretorioStory != null) {
+			try {
+				bytesimage = Files.readAllBytes(path);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return bytesimage;
+
+		
+	}
 
 
 
