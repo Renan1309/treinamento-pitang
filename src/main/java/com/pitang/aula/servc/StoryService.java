@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.model.Story;
 import com.pitang.aula.model.UserModel;
 
@@ -13,10 +14,11 @@ public interface StoryService {
 	
 	public Story creatStory (MultipartFile file, Story story);
 	
-	public List<Story> listStoryMyContacts(UserModel userModel);
+	public List<StoryDto> listStoryMyContacts(UserModel userModel);
 
-	String guardarStory(MultipartFile file, Story story);
+	public String guardarStory(MultipartFile file, Story story);
 	
+	public byte[]  bytesDoStory ( String diretorioStory);
 }
 
 

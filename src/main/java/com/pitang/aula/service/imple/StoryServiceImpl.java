@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.Story;
 import com.pitang.aula.model.UserModel;
@@ -57,11 +59,11 @@ public class StoryServiceImpl implements StoryService {
 
 
 	@Override
-	public List<Story> listStoryMyContacts(UserModel userModel) {
+	public List<StoryDto> listStoryMyContacts(UserModel userModel) {
 		// TODO Auto-generated method stub
 		List<Contact> contactList = ContactServiceImpl.userContacts(userModel.getId());
 		List<Story> storyMyContacts = new ArrayList<Story>()  ;
-		
+		byte[] bytesStory;
 		for (Contact contact : contactList) {
 			
 			List<Story> storyMyContactsDB = storyRepository.findByStoryOwnerId(contact.getIdUserContact());
@@ -69,8 +71,17 @@ public class StoryServiceImpl implements StoryService {
 			storyMyContacts.addAll(storyMyContactsDB);
 			
 		}
+		List<StoryDto> storyMyContactsDto = new ArrayList<StoryDto>()  ;
+		for (Story story : storyMyContacts) {
+			StoryDto storyDto = ModelMapperComponent.modelMapper.map(story, new TypeToken<StoryDto>() {
+			}.getType());
+			
+			bytesStory = bytesDoStory(story.getPathStory());
+			storyDto.setImagebyte(bytesStory);
+			storyMyContactsDto.add(storyDto);
+		}
 		
-		return storyMyContacts;
+		return storyMyContactsDto;
 	}
 	
 	@Override
@@ -122,20 +133,20 @@ public class StoryServiceImpl implements StoryService {
 
 	}
 	
-	public byte[]  bytesDaImagemDo(Story story, String diretorioStory) {
+	public byte[]  bytesDoStory( String diretorioStory) {
 		Path currentRelativePath = Paths.get("");
 		String UPLOADED_FOLDER = currentRelativePath.toAbsolutePath().toString() + diretorioStory;
 		Path path = Paths.get(UPLOADED_FOLDER);
-		byte[] bytesimage = null;
+		byte[] bytesImageStory = null;
 		if (diretorioStory != null) {
 			try {
-				bytesimage = Files.readAllBytes(path);
+				bytesImageStory = Files.readAllBytes(path);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		return bytesimage;
+		return bytesImageStory;
 
 		
 	}

@@ -61,7 +61,7 @@ public class StoryController {
 	
 	@RequestMapping(value = "/story/{id}", method = RequestMethod.GET )
 	@ResponseBody
-	public ResponseEntity <List<Story>> listStoryContacts (@PathVariable("id") Long id) throws IOException {
+	public ResponseEntity <List<StoryDto>> listStoryContacts (@PathVariable("id") Long id) throws IOException {
 		if( id == null || id == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -69,7 +69,7 @@ public class StoryController {
 		
 		UserModel userModel = userService.findByUserById(id);
 		
-		List<Story> storyCreat = storyService.listStoryMyContacts(userModel) ;
+		List<StoryDto> storyCreat = storyService.listStoryMyContacts(userModel) ;
 		
 		return new ResponseEntity<>(storyCreat,HttpStatus.OK);
 		

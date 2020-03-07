@@ -118,6 +118,19 @@ public class ModelMapperComponent {
                    
                     }
                 });
+        
+        modelMapper.addMappings(
+                new PropertyMap<Story ,StoryDto>() {
+                    @Override
+                    protected void configure() {
+                    	map().setId(source.getId());
+                    	map().setMessage(source.getMessage());
+                    	map().setStoryOwner(source.getStoryOwner().getId());
+                    	
+                    	
+                   
+                    }
+                });
        
         /*
         modelMapper.addMappings(
