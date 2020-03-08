@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.modelmapper.TypeToken;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
+import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.Story;
@@ -133,6 +135,7 @@ public class StoryServiceImpl implements StoryService {
 
 	}
 	
+	@Override
 	public byte[]  bytesDoStory( String diretorioStory) {
 		Path currentRelativePath = Paths.get("");
 		String UPLOADED_FOLDER = currentRelativePath.toAbsolutePath().toString() + diretorioStory;
@@ -148,6 +151,26 @@ public class StoryServiceImpl implements StoryService {
 		}
 		return bytesImageStory;
 
+		
+	}
+
+
+	@Override
+	public String DeleteStory(Long idUser , Long idStory ) {
+		// TODO Auto-generated method stub
+		Optional<Story> storyDB = storyRepository.findById(idStory);
+		if (!storyDB.isPresent()) {
+			throw new ExceptionBadRequest("id do story invalido");
+		}
+		Story story = storyDB.get();
+		
+		if(story.getStoryOwner().getId() == idUser) {
+			storyRepository.deleteById(storyDB.get().getId());
+			return "Story deletado com sucesso" ;
+		}else {
+			return "Impossível deletar story";
+		}
+		
 		
 	}
 

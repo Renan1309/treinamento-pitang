@@ -19,6 +19,8 @@ public interface StoryService {
 	public String guardarStory(MultipartFile file, Story story);
 	
 	public byte[]  bytesDoStory ( String diretorioStory);
+	
+	public String DeleteStory(Long idUser , Long idStory );
 }
 
 

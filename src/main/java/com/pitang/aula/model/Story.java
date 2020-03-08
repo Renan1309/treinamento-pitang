@@ -41,8 +41,8 @@ public class Story {
 	@Column(name = "datastory", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date datastory;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private UserModel storyOwner;
 

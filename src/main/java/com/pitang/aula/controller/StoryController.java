@@ -74,4 +74,17 @@ public class StoryController {
 		return new ResponseEntity<>(storyCreat,HttpStatus.OK);
 		
 	}
+	
+	@RequestMapping(value = "/story/user/{iduser}/story/{idstory}", method = RequestMethod.DELETE)
+	@ResponseBody
+      public ResponseEntity <String>  DeleteStoryUsuario(@PathVariable("iduser") Long iduser , @PathVariable("idstory") Long idstory) {
+      
+		if(iduser == null || iduser == 0 || idstory == null || idstory == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		String retorno = storyService.DeleteStory(iduser, idstory);
+		return new ResponseEntity<>(retorno,HttpStatus.OK);
+		
+	}
 }
