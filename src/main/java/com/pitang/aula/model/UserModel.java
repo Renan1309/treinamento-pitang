@@ -67,7 +67,8 @@ public class UserModel {
 	@OneToMany
     private List<ContentMenssage> contentMenssages;
 	
-	
+	 @OneToMany
+	 private List<HistoryPasswordsModel> history_passwords;
 	
 	
 

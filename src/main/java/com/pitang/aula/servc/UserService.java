@@ -21,6 +21,8 @@ public interface UserService {
 	public UserModel creatUser(MultipartFile file, UserModel user);
 
 	public UserModel updateUser(Long id, UserModel userChange);
+	
+	public String updateUserPassword(Long id, String password);
 
 	void deleteUser(Long id);
 

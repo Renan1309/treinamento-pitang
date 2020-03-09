@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -63,6 +66,8 @@ public class StoryServiceImpl implements StoryService {
 	@Override
 	public List<StoryDto> listStoryMyContacts(UserModel userModel) {
 		// TODO Auto-generated method stub
+		
+		gerardata();
 		List<Contact> contactList = ContactServiceImpl.userContacts(userModel.getId());
 		List<Story> storyMyContacts = new ArrayList<Story>()  ;
 		byte[] bytesStory;
@@ -173,7 +178,19 @@ public class StoryServiceImpl implements StoryService {
 		
 		
 	}
+	private void gerardata() {
+		String formatodDate = null;
+	     Date date = new Date();
+	     System.out.println("1p = " + date);
+	     DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+	     System.out.println("2p = " +formato);
+	     formatodDate = formato.format(date);
+	     System.out.println("3p = " +formatodDate+" 00:00:00");
+	     System.out.println("3p = " +formatodDate+" 23:59:59");
+	
+	}
 
-
+//08/03/2020 05:09:17
+//08/03/2020 23:59:59
 
 }

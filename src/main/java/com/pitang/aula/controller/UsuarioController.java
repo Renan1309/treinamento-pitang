@@ -156,6 +156,21 @@ public class UsuarioController {
 		return new ResponseEntity<>(userdto, HttpStatus.OK);
 
 	}
+	
+	@RequestMapping(value = "/user/password/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public ResponseEntity<String> changePassword(@PathVariable("id") Long id, @RequestBody UserDto userdto) {
+
+		if (userdto == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		UserModel user = ModelMapperComponent.modelMapper.map(userdto, new TypeToken<UserModel>() {
+		}.getType());
+		String return_password = userService.updateUserPassword(id, user.getPassword());
+		
+		return new ResponseEntity<>(return_password, HttpStatus.OK);
+
+	}
 
 	@RequestMapping(value = "/user/image/{id}", method = RequestMethod.PUT)
 	@ResponseBody

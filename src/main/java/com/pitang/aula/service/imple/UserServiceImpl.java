@@ -22,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.dto.UsuarioForm;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
+import com.pitang.aula.model.HistoryPasswordsModel;
 import com.pitang.aula.model.UserModel;
+import com.pitang.aula.repository.HistoryPasswordRepository;
 import com.pitang.aula.repository.UserModelRepository;
 import com.pitang.aula.servc.UserService;
 
@@ -41,6 +43,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserModelRepository userRepository;
+	
+	@Autowired
+	private HistoryPasswordRepository historyPasswordRepository;
 
 	@Override
 	public List<UserModel> listUser() {
@@ -94,12 +99,21 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user.setPassword(senha_encrypt);
+		
+		HistoryPasswordsModel historyPasswordsModel =new HistoryPasswordsModel();
+		historyPasswordsModel.setPreviousPassword(senha_encrypt);
+		
+		
+		
 		user = userRepository.save(user);
+		historyPasswordsModel.setUserOwner(user);
+		historyPasswordRepository.save(historyPasswordsModel);
 
 		String caminhoImage = guardarArquivo(file, user); // metodo para guarda o arquivo
 
 		user.setPathImage(caminhoImage);
-
+		
+		
 		return userRepository.save(user);
 	}
 
@@ -107,7 +121,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserModel updateUser(Long id, UserModel userChange) {
 		Optional<UserModel> user = userRepository.findById(id);
-		if (user == null) {
+		if (!user.isPresent()) {
 			throw new ExceptionBadRequest("Id inválido !");
 		}
 		UserModel useredit = user.get();
@@ -117,6 +131,39 @@ public class UserServiceImpl implements UserService {
 
 		return useredit;
 
+	}
+	
+	@Override
+	public String updateUserPassword(Long id, String password) {
+		String senha_encrypt = null;
+		try {
+			senha_encrypt = passwordhash(password);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Optional<UserModel> user = userRepository.findById(id);
+		if(!user.isPresent()) {
+			throw new ExceptionBadRequest("Id inválido !");
+		}
+		UserModel userDB = user.get();
+		HistoryPasswordsModel h_password = historyPasswordRepository.findByPreviousPasswordAndUserOwnerId(senha_encrypt, id);
+		if(h_password != null && h_password.getPreviousPassword().equals(senha_encrypt) ) {
+			System.out.println("Senha ja usada ===> " + h_password.getPreviousPassword());
+			throw new ExceptionBadRequest("Senha ja utilizada !");
+		}
+		
+		userDB.setPassword(senha_encrypt);
+		userRepository.save(userDB);
+		
+		HistoryPasswordsModel historyPasswordsModel =new HistoryPasswordsModel();
+		historyPasswordsModel.setPreviousPassword(senha_encrypt);
+		historyPasswordsModel.setUserOwner(userDB);
+		historyPasswordRepository.save(historyPasswordsModel);
+		return "Senha Alterada com sucesso";
 	}
 
 	@Override
@@ -283,6 +330,8 @@ public class UserServiceImpl implements UserService {
 		userdto.setImagebyte(bytesimage); //
 		return userdto;
 	}
+
+	
 
 }
 
