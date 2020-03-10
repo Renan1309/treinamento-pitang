@@ -7,11 +7,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pitang.aula.dto.MensagemDto;
+import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
+import com.pitang.aula.mapper.ModelMapperComponent;
 import com.pitang.aula.model.Contact;
 import com.pitang.aula.model.ContentMenssage;
 import com.pitang.aula.repository.ContentMenssageRepository;
@@ -51,7 +55,7 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	}
 
 	@Override
-	public List<ContentMenssage> listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend) {
+	public List<MensagemDto> listarMensagensAtivas(Long id_user, Long id_contact, Boolean statusSend) {
 		// TODO Auto-generated method stub
 
 		List<ContentMenssage> msg_user_send = contentMenssageRepository.findconversasEnviadasPeloSend(id_user,
@@ -60,16 +64,25 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 				id_contact, statusSend);
 
 		List<ContentMenssage> listaMensagensOk = new ArrayList(msg_user_send.size() + msg_content.size());
-		;
-
+		
+		
 		listaMensagensOk.addAll(msg_user_send);
 		listaMensagensOk.addAll(msg_content);
 
-		// Lista<ContentMessage> lista = new
-		// ArrayList<ContentMenssage>(listaMensagensOK);
+		
 		listaMensagensOk.sort(Comparator.comparing(ContentMenssage::getDatamsg));
+		
+		List<MensagemDto> listMensagemDto = new ArrayList<MensagemDto>();
+		
+		for (ContentMenssage contentMenssage : listaMensagensOk) {
+			MensagemDto mensagemdto = ModelMapperComponent.modelMapper.map(contentMenssage,new TypeToken<MensagemDto>() {}.getType());
+			
+			listMensagemDto.add(mensagemdto);
+			
+		}
+		
 
-		return listaMensagensOk;
+		return listMensagemDto;
 	}
 
 	@Override
@@ -132,11 +145,13 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 			// ContentMenssage contentMenssage =
 			// contentMenssageRepository.findUltimaMensagem(id_user,
 			// contact.getIdUserContact() );
-			List<ContentMenssage> listmensagensok = listarMensagensAtivas(id_user, contact.getIdUserContact(),
+			
+			
+			List<MensagemDto> listmensagensok = listarMensagensAtivas(id_user, contact.getIdUserContact(),
 					statusSend);
 
 			if (!listmensagensok.isEmpty()) {
-				ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
+				MensagemDto contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
 				String name = contact.getName();
 				talk = new TalkDto();
 				talk.setContact(contact);
@@ -144,17 +159,17 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 				talklist.add(talk);
 
 			}
+			
 		}
 
-		// teste para mostra json das mensagens que não possuo contato .
+		//  mensagens que não possuo contato .
 		List<TalkDto> conversasDeContatosNcadastrados = listarMensagensAtivasGeral(id_user);
-		if (!conversasDeContatosNcadastrados.isEmpty()) {
+		if (conversasDeContatosNcadastrados != null && !conversasDeContatosNcadastrados.isEmpty() ) {
 			talklist.addAll(conversasDeContatosNcadastrados);
 		}
 		
-		// teste para mostra json das mensagens que não possuo contato.
-		
-		// ordenar talklist
+	
+	
 		return talklist;
 	}
 
@@ -162,20 +177,23 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	public List<TalkDto> excluiConversa(Long id_user, Long id_contact, Boolean statusSend) {
 		// TODO Auto-generated method stub
 		List<TalkDto> talklist = new ArrayList<TalkDto>();
-		List<ContentMenssage> listmensagensok = listarMensagensAtivas(id_user, id_contact, statusSend);
+		
+		List<MensagemDto> listmensagensok = listarMensagensAtivas(id_user, id_contact, statusSend);
 
-		for (ContentMenssage contentMenssage : listmensagensok) {
-			deletarMensagemIndividual(id_user, contentMenssage);
+		for (MensagemDto contentMenssage : listmensagensok) {
+			
+			Optional<ContentMenssage> messageOriginal = contentMenssageRepository.findById(contentMenssage.getId());
+			
+			deletarMensagemIndividual(id_user, messageOriginal.get());
 		}
+		
 
 		talklist = listarConversas(id_user);
+		
 		return talklist;
 	}
 
-	private void listarConversasAll(Long id_user) {
-
-	}
-
+	
 	public List<TalkDto> listarMensagensAtivasGeral(Long id_user) {
 
 		List<ContentMenssage> msg_n_cadastrados = contentMenssageRepository
@@ -204,15 +222,29 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 			talk = new TalkDto();
 			contact = new Contact();
 			System.out.println("id que n possuo como contato :" + long1);
-			List<ContentMenssage> listaMensagensOk = new ArrayList<>();
+			
 			List<ContentMenssage> listmensagensok = contentMenssageRepository.findconversasEnviadasPeloContact(id_user,
 					long1, statusmsg);
-			listaMensagensOk.sort(Comparator.comparing(ContentMenssage::getDatamsg));
-			ContentMenssage contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
+			
+			List<MensagemDto> listMensagemDto = new ArrayList<MensagemDto>();
+			if(listmensagensok != null && !listmensagensok.isEmpty()) {
+				
+				for (ContentMenssage contentMenssage : listmensagensok) {
+					MensagemDto mensagemdto = ModelMapperComponent.modelMapper.map(contentMenssage,new TypeToken<MensagemDto>() {}.getType());
+					
+					listMensagemDto.add(mensagemdto);
+					
+				}
+			}
+			
+			
+			
+			//listaMensagensOk.sort(Comparator.comparing(ContentMenssage::getDatamsg));
+			MensagemDto mensagemDto = listMensagemDto.get(listMensagemDto.size() - 1);
 			contact.setIdUserContact(long1);
 			contact.setName("Contato_" + long1);
 
-			talk.setContentMenssage(contentMenssage);
+			talk.setContentMenssage(mensagemDto);
 			talk.setContact(contact);
 			talklist.add(talk);
 
@@ -223,6 +255,9 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		}
 
 		return talklist;
+		
+		
+		//return null ;
 	}
 
 }

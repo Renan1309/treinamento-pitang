@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
+import com.pitang.aula.dto.MensagemDto;
 import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
@@ -57,10 +58,10 @@ public class ContentMenssageController {
 
 	@RequestMapping(value = "/mensagens/user/{id_user}/contact/{id_contact}/status/{statusmsg}", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<ContentMenssage>> listconversa(@PathVariable("id_user") Long id_user,
+	public ResponseEntity<List<MensagemDto>> listconversa(@PathVariable("id_user") Long id_user,
 			@PathVariable("id_contact") Long id_contact, @PathVariable("statusmsg") Boolean statusmsg) {
 
-		List<ContentMenssage> msg = contentMenssageService.listarMensagensAtivas(id_user, id_contact, statusmsg);
+		List<MensagemDto> msg = contentMenssageService.listarMensagensAtivas(id_user, id_contact, statusmsg);
 
 		if (msg.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -88,7 +89,7 @@ public class ContentMenssageController {
 
 	@RequestMapping(value = "/mensage/new", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<ContentMenssage> enviarMenssage(@RequestBody ContentMenssageDto contentMenssagedto) {
+	public ResponseEntity<MensagemDto> enviarMenssage(@RequestBody ContentMenssageDto contentMenssagedto) {
 		if (contentMenssagedto == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -108,14 +109,17 @@ public class ContentMenssageController {
          contentMenssage.setIdusercontact(usertarget);
 		
 		ContentMenssage msg = contentMenssageService.enviarMenssage(contentMenssage);
-
-		return new ResponseEntity<>(msg, HttpStatus.OK);
+		
+		MensagemDto mensagemdto = ModelMapperComponent.modelMapper.map(msg,new TypeToken<MensagemDto>() {}.getType());
+		
+		
+		return new ResponseEntity<>(mensagemdto, HttpStatus.OK);
 
 	}
 	
 	@RequestMapping(value = "/message/user/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<ContentMenssage> deletarMensagemIndividual(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+	public ResponseEntity<MensagemDto> deletarMensagemIndividual(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
 		
 		if(messageDto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -135,14 +139,17 @@ public class ContentMenssageController {
          contentMenssage.setIdusermsg(userowner);
          contentMenssage.setIdusercontact(usertarget);
          
-		ContentMenssage msg = contentMenssageService.deletarMensagemIndividual(id , contentMenssage);		
-		return new ResponseEntity<>( msg ,HttpStatus.OK);
+		ContentMenssage msg = contentMenssageService.deletarMensagemIndividual(id , contentMenssage);
+		
+		MensagemDto mensagemdto = ModelMapperComponent.modelMapper.map(msg,new TypeToken<MensagemDto>() {}.getType());
+		
+		return new ResponseEntity<>( mensagemdto ,HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/message/delete/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<ContentMenssage> deletarMesagemGeral(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+	public ResponseEntity<MensagemDto> deletarMesagemGeral(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
 		
 		if(messageDto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -162,8 +169,10 @@ public class ContentMenssageController {
          contentMenssage.setIdusermsg(userowner);
          contentMenssage.setIdusercontact(usertarget);
 		
-		ContentMenssage msg = contentMenssageService.deletarMensagem(id , contentMenssage);		
-		return new ResponseEntity<>( msg ,HttpStatus.OK);
+		ContentMenssage msg = contentMenssageService.deletarMensagem(id , contentMenssage);	
+		
+		MensagemDto mensagemdto = ModelMapperComponent.modelMapper.map(msg,new TypeToken<MensagemDto>() {}.getType());
+		return new ResponseEntity<>( mensagemdto ,HttpStatus.OK);
 		
 	}
 	

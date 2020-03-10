@@ -2,6 +2,7 @@ package com.pitang.aula.servc;
 
 import java.util.List;
 
+import com.pitang.aula.dto.MensagemDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.model.ContentMenssage;
 
@@ -13,7 +14,7 @@ public interface ContentMenssageService {
 	
 	public List<ContentMenssage>  listarConversas(Long id_user , Long id_contact);
 	
-	public List<ContentMenssage> listarMensagensAtivas(Long id_user , Long id_contact, Boolean statusSend);
+	public List<MensagemDto> listarMensagensAtivas(Long id_user , Long id_contact, Boolean statusSend);
 	
 	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage);
 	
