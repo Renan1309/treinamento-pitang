@@ -101,13 +101,14 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(senha_encrypt);
 		
 		HistoryPasswordsModel historyPasswordsModel =new HistoryPasswordsModel();
-		historyPasswordsModel.setPreviousPassword(senha_encrypt);
+		historyPasswordsModel.setPreviousPassword(senha_encrypt);//salvando a nova senha
 		
 		
 		
 		user = userRepository.save(user);
-		historyPasswordsModel.setUserOwner(user);
-		historyPasswordRepository.save(historyPasswordsModel);
+		
+		historyPasswordsModel.setUserOwner(user);// pegando o usuario q foi salvo
+		historyPasswordRepository.save(historyPasswordsModel);//salvando no banco
 
 		String caminhoImage = guardarArquivo(file, user); // metodo para guarda o arquivo
 
