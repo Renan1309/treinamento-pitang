@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MensagemDto;
-import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.StoryDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
@@ -96,19 +95,6 @@ public class ModelMapperComponent {
                     }
                 });
         
-        modelMapper.addMappings(
-                new PropertyMap<MessageDto , ContentMenssage>() {
-                    @Override
-                    protected void configure() {
-                   
-                    	map().setId(source.getId());
-                    	//map().setIdusermsg(userowner);
-                    	//map().setIdusercontact(usertarget);
-                    	map().setStatusSend(source.getStatusSend());
-                    	map().setStatusRecipient(source.getStatusRecipient());
-                    	
-                    }
-                });
         
         modelMapper.addMappings(
                 new PropertyMap<ContentMenssage , MensagemDto>() {
@@ -120,6 +106,21 @@ public class ModelMapperComponent {
                     	map().setContentmsg(source.getContentmsg());
                     	map().setIdusermsg(source.getIdusermsg().getId());
                     	map().setIdusercontact(source.getIdusercontact().getId());
+                    	map().setStatusSend(source.getStatusSend());
+                    	map().setStatusRecipient(source.getStatusRecipient());
+                    	when(Conditions.isNotNull()).using(ModelConverter.fromDateToString).map(source.getDatamsg()).setDatareturn(null);
+                    }
+                });
+        
+        modelMapper.addMappings(
+                new PropertyMap<MensagemDto , ContentMenssage>() {
+                    @Override
+                    protected void configure() {
+                   
+                    	map().setId(source.getId());
+                    	map().setContentmsg(source.getContentmsg());
+                    	//map().setIdusermsg(userowner);
+                    	//map().setIdusercontact(usertarget);
                     	map().setStatusSend(source.getStatusSend());
                     	map().setStatusRecipient(source.getStatusRecipient());
                     	
@@ -143,6 +144,7 @@ public class ModelMapperComponent {
                     	map().setId(source.getId());
                     	map().setMessage(source.getMessage());
                     	map().setStoryOwner(source.getStoryOwner().getId());
+                    	when(Conditions.isNotNull()).using(ModelConverter.fromDateToString).map(source.getDatastory()).setDataStory(null);;
                     	
                     	
                    

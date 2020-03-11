@@ -8,6 +8,14 @@ public class MensagemDto {
 	private Long idusercontact ;
 	private Boolean statusSend  ;
 	private Boolean statusRecipient ;
+	private String datareturn;
+	
+	public String getDatareturn() {
+		return datareturn;
+	}
+	public void setDatareturn(String datareturn) {
+		this.datareturn = datareturn;
+	}
 	public Long getId() {
 		return id;
 	}

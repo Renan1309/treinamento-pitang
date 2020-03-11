@@ -40,7 +40,7 @@ public class StoryController {
 	@RequestMapping(value = "/story", method = RequestMethod.POST )
 	@ResponseBody
 	                   
-	public ResponseEntity<Story> creatStory(@RequestParam("file") MultipartFile file ,@RequestParam("storyPost") String storyPost) throws IOException {
+	public ResponseEntity<StoryDto> creatStory(@RequestParam("file") MultipartFile file ,@RequestParam("storyPost") String storyPost) throws IOException {
 		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -54,8 +54,14 @@ public class StoryController {
 	    storyCreat.setStoryOwner(userOwnerStory);
 	    
 	    storyCreat = storyService.creatStory(file, storyCreat);
-		
-		return new ResponseEntity<>(storyCreat,HttpStatus.OK);
+	    
+	    storyDto = ModelMapperComponent.modelMapper.map(storyCreat, new TypeToken<StoryDto>() {}.getType());
+	     
+	    byte[] bytesStory = storyService.bytesDoStory(storyCreat.getPathStory());
+	    storyDto.setImagebyte(bytesStory);
+	     
+	     
+		return new ResponseEntity<>(storyDto,HttpStatus.OK);
 		
 	}
 	

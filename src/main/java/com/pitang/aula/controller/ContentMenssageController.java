@@ -1,5 +1,6 @@
 package com.pitang.aula.controller;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pitang.aula.dto.ContactDto;
 import com.pitang.aula.dto.ContentMenssageDto;
 import com.pitang.aula.dto.MensagemDto;
-import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.dto.UserDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
@@ -61,6 +61,9 @@ public class ContentMenssageController {
 	public ResponseEntity<List<MensagemDto>> listconversa(@PathVariable("id_user") Long id_user,
 			@PathVariable("id_contact") Long id_contact, @PathVariable("statusmsg") Boolean statusmsg) {
 
+		LocalDateTime dataexata = LocalDateTime.now();
+		System.out.println("Essa data ===> "+dataexata);
+		
 		List<MensagemDto> msg = contentMenssageService.listarMensagensAtivas(id_user, id_contact, statusmsg);
 
 		if (msg.size() == 0) {
@@ -119,19 +122,19 @@ public class ContentMenssageController {
 	
 	@RequestMapping(value = "/message/user/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<MensagemDto> deletarMensagemIndividual(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+	public ResponseEntity<MensagemDto> deletarMensagemIndividual(@PathVariable("id") Long id ,@RequestBody MensagemDto mensagemDto ) {
 		
-		if(messageDto == null) {
+		if(mensagemDto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 		
-		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
+		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(mensagemDto,new TypeToken<ContentMenssage>() {}.getType());
 		
-		 UserModel userowner =	userService.findByUserById(messageDto.getIdusermsg());
+		 UserModel userowner =	userService.findByUserById(mensagemDto.getIdusermsg());
          if(userowner == null) {
          	throw new ExceptionBadRequest("Id de usuário inválido !");
          }
-         UserModel usertarget =	userService.findByUserById(messageDto.getIdusercontact());
+         UserModel usertarget =	userService.findByUserById(mensagemDto.getIdusercontact());
          if(usertarget == null) {
          	throw new ExceptionBadRequest("Id de usuário inválido !");
          }
@@ -149,19 +152,19 @@ public class ContentMenssageController {
 	
 	@RequestMapping(value = "/message/delete/{id}", method = RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<MensagemDto> deletarMesagemGeral(@PathVariable("id") Long id ,@RequestBody MessageDto messageDto ) {
+	public ResponseEntity<MensagemDto> deletarMesagemGeral(@PathVariable("id") Long id ,@RequestBody MensagemDto mensagemDto ) {
 		
-		if(messageDto == null) {
+		if(mensagemDto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 		
-		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(messageDto,new TypeToken<ContentMenssage>() {}.getType());
+		ContentMenssage contentMenssage = ModelMapperComponent.modelMapper.map(mensagemDto,new TypeToken<ContentMenssage>() {}.getType());
 		
-		 UserModel userowner =	userService.findByUserById(messageDto.getIdusermsg());
+		 UserModel userowner =	userService.findByUserById(mensagemDto.getIdusermsg());
          if(userowner == null) {
          	throw new ExceptionBadRequest("Id de usuário inválido !");
          }
-         UserModel usertarget =	userService.findByUserById(messageDto.getIdusercontact());
+         UserModel usertarget =	userService.findByUserById(mensagemDto.getIdusercontact());
          if(usertarget == null) {
          	throw new ExceptionBadRequest("Id de usuário inválido !");
          }

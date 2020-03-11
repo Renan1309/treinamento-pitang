@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pitang.aula.dto.MensagemDto;
-import com.pitang.aula.dto.MessageDto;
 import com.pitang.aula.dto.TalkDto;
 import com.pitang.aula.exceptions.ExceptionBadRequest;
 import com.pitang.aula.mapper.ModelMapperComponent;
@@ -88,21 +87,19 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 	@Override
 	public ContentMenssage enviarMenssage(ContentMenssage contentMenssage) {
 
-		// contentMenssageRepository.save(contentMenssage);
 
 		return contentMenssageRepository.save(contentMenssage);
 	}
 
 	@Override
 	public ContentMenssage deletarMensagemIndividual(Long id, ContentMenssage contentMenssage) {
-		// TODO Auto-generated method stub
+
 		Optional<ContentMenssage> messageOriginal = contentMenssageRepository.findById(contentMenssage.getId());
 		if (!messageOriginal.isPresent()) {
 			throw new ExceptionBadRequest("Mensagem não existe !");
 		}
 		messageOriginal.get();
-		if (id == contentMenssage.getIdusermsg().getId()
-				&& messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
+		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
 		} else if (id != contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusRecipient(false);
@@ -115,14 +112,13 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 
 	@Override
 	public ContentMenssage deletarMensagem(Long id, ContentMenssage contentMenssage) {
-		// TODO Auto-generated method stub
+
 		Optional<ContentMenssage> messageOriginal = contentMenssageRepository.findById(contentMenssage.getId());
 		if (!messageOriginal.isPresent()) {
 			throw new ExceptionBadRequest("Menssagem não existe !");
 		}
 
-		if (id == contentMenssage.getIdusermsg().getId()
-				&& messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
+		if (id == contentMenssage.getIdusermsg().getId() && messageOriginal.get().getIdusermsg().getId() == contentMenssage.getIdusermsg().getId()) {
 			messageOriginal.get().setStatusSend(false);
 			messageOriginal.get().setStatusRecipient(false);
 		} else {
@@ -142,24 +138,16 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		Boolean statusSend = true;
 
 		for (Contact contact : userContactList) {
-			// ContentMenssage contentMenssage =
-			// contentMenssageRepository.findUltimaMensagem(id_user,
-			// contact.getIdUserContact() );
-			
-			
-			List<MensagemDto> listmensagensok = listarMensagensAtivas(id_user, contact.getIdUserContact(),
-					statusSend);
+
+			List<MensagemDto> listmensagensok = listarMensagensAtivas(id_user, contact.getIdUserContact(), statusSend);
 
 			if (!listmensagensok.isEmpty()) {
 				MensagemDto contentMenssage = listmensagensok.get(listmensagensok.size() - 1);
-				String name = contact.getName();
 				talk = new TalkDto();
 				talk.setContact(contact);
 				talk.setContentMenssage(contentMenssage);
 				talklist.add(talk);
-
-			}
-			
+				}
 		}
 
 		//  mensagens que não possuo contato .
@@ -167,15 +155,13 @@ public class ContentMenssageServiceImpl implements ContentMenssageService {
 		if (conversasDeContatosNcadastrados != null && !conversasDeContatosNcadastrados.isEmpty() ) {
 			talklist.addAll(conversasDeContatosNcadastrados);
 		}
-		
-	
 	
 		return talklist;
 	}
 
 	@Override
 	public List<TalkDto> excluiConversa(Long id_user, Long id_contact, Boolean statusSend) {
-		// TODO Auto-generated method stub
+
 		List<TalkDto> talklist = new ArrayList<TalkDto>();
 		
 		List<MensagemDto> listmensagensok = listarMensagensAtivas(id_user, id_contact, statusSend);

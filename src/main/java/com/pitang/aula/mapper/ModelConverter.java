@@ -1,8 +1,14 @@
 package com.pitang.aula.mapper;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 
 public class ModelConverter {
+	
+	private static final String OUTPUT_FORMAT_FOR_DATE_HOUR = "dd/MM/yyyy hh:mm:ss";
 	
 	private ModelConverter() {
 		throw new IllegalStateException("Utility class");
@@ -29,4 +35,19 @@ public class ModelConverter {
 			}
 		}
 	};
+	
+	
+	public static final Converter<Date, String> fromDateToString = new AbstractConverter<Date, String>() {
+		@Override
+		protected String convert(Date source) {
+			if(source == null) {
+				return null;
+			}
+			SimpleDateFormat df = new SimpleDateFormat(OUTPUT_FORMAT_FOR_DATE_HOUR);
+			return df.format(source.getTime());
+		}
+	};
+
+
+	
 }

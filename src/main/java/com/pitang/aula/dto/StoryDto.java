@@ -5,8 +5,17 @@ public class StoryDto {
 	private Long id;
 	private String message ;
 	private Long storyOwner;
+	private String dataStory ;
 	private byte[] imagebyte ;
+
 	
+	
+	public String getDataStory() {
+		return dataStory;
+	}
+	public void setDataStory(String dataStory) {
+		this.dataStory = dataStory;
+	}
 	public Long getId() {
 		return id;
 	}

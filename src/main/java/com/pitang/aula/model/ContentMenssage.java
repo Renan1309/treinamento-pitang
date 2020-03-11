@@ -46,6 +46,9 @@ public class ContentMenssage {
 	@Column(name = "status_recipient" )
 	private Boolean statusRecipient = true;
 	
+	
+	
+	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "datamsg"  , columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
@@ -125,6 +128,9 @@ public class ContentMenssage {
 		this.datamsg = datamsg;
 	}
 
+	
+
+	
 	
 
 	
