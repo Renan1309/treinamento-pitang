@@ -109,7 +109,7 @@ public class UsuarioController {
 		////// retornando array de byte
 		userdto = userService.bytesDaImagem(userdto, userModel.getPathImage());
 		////// retornando array de byte
-		return new ResponseEntity<>(userdto, HttpStatus.OK);
+		return new ResponseEntity<>(userdto, HttpStatus.CREATED);
 
 	}
 
@@ -137,7 +137,7 @@ public class UsuarioController {
 		contactdto = ModelMapperComponent.modelMapper.map(contact, new TypeToken<ContactDto>() {
 		}.getType());
 
-		return new ResponseEntity<>(contactdto, HttpStatus.OK);
+		return new ResponseEntity<>(contactdto, HttpStatus.CREATED);
 
 	}
 
