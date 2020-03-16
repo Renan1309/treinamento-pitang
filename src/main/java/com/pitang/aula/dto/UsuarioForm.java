@@ -6,7 +6,7 @@ public class UsuarioForm {
 	private String sobrenome;
 	private String telefone;
 	private String email ;
-	private String senha;
+	private String password;
 	
 	public String getNome() {
 		return nome;
@@ -33,10 +33,10 @@ public class UsuarioForm {
 		this.email = email;
 	}
 	public String getSenha() {
-		return senha;
+		return password;
 	}
 	public void setSenha(String senha) {
-		this.senha = senha;
+		this.password = senha;
 	}
 	
 	
