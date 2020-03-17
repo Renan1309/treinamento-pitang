@@ -34,5 +34,7 @@ public interface UserService {
 
 	public String alterarImagem(MultipartFile file, Long id);
 
+	UserModel creatUserFront(UserModel user);
+
 	// public Boolean validarIdentidadeUsuario();
 }

@@ -331,6 +331,42 @@ public class UserServiceImpl implements UserService {
 		userdto.setImagebyte(bytesimage); //
 		return userdto;
 	}
+	
+	@Override
+	public UserModel creatUserFront( UserModel user) {
+
+		String senha_encrypt = null;
+		checkUser(user);
+		validateUserCreat(user);
+		try {
+			senha_encrypt = passwordhash(user.getPassword());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		user.setPassword(senha_encrypt);
+		
+		HistoryPasswordsModel historyPasswordsModel =new HistoryPasswordsModel();
+		historyPasswordsModel.setPreviousPassword(senha_encrypt);//salvando a nova senha
+		
+		
+		
+		user = userRepository.save(user);
+		
+		historyPasswordsModel.setUserOwner(user);// pegando o usuario q foi salvo
+		historyPasswordRepository.save(historyPasswordsModel);//salvando no banco
+
+	
+
+		
+		
+		
+		return userRepository.save(user);
+	}
 
 	
 

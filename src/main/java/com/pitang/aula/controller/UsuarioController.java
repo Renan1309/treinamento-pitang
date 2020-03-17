@@ -90,9 +90,9 @@ public class UsuarioController {
 		UserDto userdto = null;
 		userdto = objectMapper.readValue(userdtopost, UserDto.class);
 
-		if (file.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+		//if (file.isEmpty()) {
+		//	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		//}
 		if (userdto == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
@@ -212,5 +212,24 @@ public class UsuarioController {
 
 	}
 	// METODO DO AUTENTICA
+	
+	@RequestMapping(value = "/creatuser", method = RequestMethod.POST)
+	@ResponseBody
 
+public ResponseEntity<UserDto> creaUsuario(@RequestBody UserDto userdto) {
+		
+		if(userdto == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+		}
+		UserModel userModel = ModelMapperComponent.modelMapper.map(userdto, new TypeToken<UserModel>() {}.getType());
+		
+		userModel  = userService.creatUserFront(userModel);
+		
+		userdto = ModelMapperComponent.modelMapper.map(userModel, new TypeToken<UserDto>() {}.getType());
+		
+		return new ResponseEntity<>(userdto,HttpStatus.OK);
+		
+		
+	}
 }
